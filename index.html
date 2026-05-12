@@ -3509,6 +3509,7 @@
   // ── Google Sheets API ────────────────────────────────────────────
   let _GS_CONNECTED = false;
   let _GS_OFFLINE   = false;
+  window._GS_CONNECTED = false;
 
   function gsIsConfigured() {
     return !!GSCONFIG.scriptUrl && !!GSCONFIG.token;
@@ -3937,14 +3938,14 @@
     if(gsIsConfigured() && !_GS_OFFLINE) {
       try {
         const cfg = await gsGetConfig();
-        _GS_CONNECTED = true;
+        window._GS_CONNECTED = true;
         localStorage.setItem('rnc_config_cache', JSON.stringify(cfg));
         updateSheetStatusUI();
         return cfg;
       } catch(e) {
         console.warn('GS loadConfig failed, using cache:', e);
-        _GS_OFFLINE   = true;
-        _GS_CONNECTED = false;
+        _GS_OFFLINE          = true;
+        window._GS_CONNECTED = false;
         updateSheetStatusUI();
       }
     }
@@ -3971,7 +3972,7 @@
     const el   = document.getElementById('sp-sheet-status');
     const text = document.getElementById('sp-sheet-status-text');
     if(!el || !text) return;
-    if(_GS_CONNECTED) {
+    if(window._GS_CONNECTED) {
       el.className = 'sender-status connected';
       text.textContent = '✓ Google Sheets connecté';
     } else {
@@ -3996,7 +3997,7 @@
     if(gsIsConfigured() && !_GS_OFFLINE) {
       try {
         const data = await gsGetSiteData(SESSION.siteId);
-        _GS_CONNECTED = true;
+        window._GS_CONNECTED = true;
         updateSheetStatusUI();
         if(data.accueil)        dataA      = data.accueil;
         if(data.courrier)       dataC      = data.courrier;
@@ -4006,8 +4007,8 @@
         localStorage.setItem(getSK().collabs,  JSON.stringify(dataCollab));
       } catch(e) {
         console.warn('GS load failed, using localStorage:', e);
-        _GS_OFFLINE   = true;
-        _GS_CONNECTED = false;
+        _GS_OFFLINE          = true;
+        window._GS_CONNECTED = false;
         updateSheetStatusUI();
         dataA      = load('accueil');
         dataC      = load('courrier');
