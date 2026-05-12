@@ -2055,7 +2055,6 @@
       <div class="session-badge-avatar" id="session-avatar">?</div>
       <div class="session-badge-info">
         <span class="session-badge-name" id="session-name">—</span>
-        <span class="session-badge-site" id="session-site">—</span>
       </div>
       <button class="session-logout-btn" onclick="doLogout()" title="Se déconnecter">✕</button>
     </div>
@@ -2094,9 +2093,10 @@
         <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
-      <span class="sender-dot" id="sender-dot-indicator"></span>
-      <span id="header-sender-email"></span>
-      <span id="header-file-badge" style="display:none;margin-left:6px;background:rgba(255,255,255,.12);border-radius:999px;padding:2px 9px;font-size:10px;letter-spacing:.5px;font-weight:600;color:rgba(255,255,255,.85)">💾 Fichier connecté</span>
+      <span id="header-greeting" style="display:none;flex-direction:column;line-height:1.25;text-align:right">
+        <span style="font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.8px;font-weight:400">Bonjour</span>
+        <span id="header-greeting-name" style="font-size:13px;font-weight:600;color:white"></span>
+      </span>
     </div>
   </div>
 </header>
@@ -2132,50 +2132,18 @@
   <!-- ══ ONGLET 1 — RÉGLAGES ══ -->
   <div class="sp-tab-panel active" id="sppanel-tech">
 
-    <!-- Nom affiché dans les e-mails -->
-    <div class="sp-section">
-      <div class="sp-section-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Nom affiché dans les e-mails
-      </div>
-      <div class="sp-field">
-        <label class="sp-label">Nom affiché</label>
-        <input class="sp-input" type="text" id="sp-sender-name" placeholder="ex : Sylvain Loire">
-      </div>
-      <div class="sp-info" style="margin-top:.5rem">
-        💡 Ce nom apparaîtra dans la signature de vos notifications. Les mails partent depuis votre compte Outlook connecté sur ce poste.
-      </div>
-    </div>
-
-    <!-- Stockage -->
+    <!-- Stockage — statut connexion Google Sheets -->
     <div class="sp-section" id="sp-section-stockage">
       <div class="sp-section-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        <span id="sp-storage-title">Stockage local (fichier PC)</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        Stockage des données
       </div>
-      <div id="sp-file-status-row" class="sender-status disconnected" style="margin-bottom:.75rem">
+      <div id="sp-sheet-status" class="sender-status" style="margin-bottom:.75rem">
         <span class="sender-status-dot"></span>
-        <span id="sp-file-status-text">Aucun fichier connecté</span>
+        <span id="sp-sheet-status-text">localStorage (mode local)</span>
       </div>
-      <div id="sp-file-path-row" style="display:none;margin-bottom:.75rem">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Fichier actuel</div>
-        <div id="sp-file-path-name" style="font-size:12px;color:var(--forest);background:var(--ecru);padding:5px 9px;border-radius:5px;word-break:break-all"></div>
-      </div>
-      <div class="sp-btn-row">
-        <button class="sp-btn sp-btn-primary" onclick="createDataFile()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Créer un fichier
-        </button>
-        <button class="sp-btn sp-btn-outline" onclick="openDataFile()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-          Ouvrir existant
-        </button>
-      </div>
-      <div id="sp-file-disconnect-row" style="display:none;margin-top:8px">
-        <button class="sp-btn sp-btn-danger" onclick="disconnectFile()">Déconnecter le fichier</button>
-      </div>
-      <div class="sp-info" style="margin-top:.75rem">
-        💾 Sauvegarde automatique à chaque modification. Compatible Chrome &amp; Edge.
+      <div class="sp-info">
+        🔄 En attente de connexion Google Sheets — les données seront automatiquement synchronisées entre tous les postes une fois le service activé.
       </div>
     </div>
 
@@ -3516,6 +3484,12 @@
    3. Remplacez le chemin du dossier Resonance
       ex : /sites/accueil/Documents partages/Resonance
    ══════════════════════════════════════════════════════════════ */
+  // ── Configuration Google Sheets (Apps Script) ──────────────────
+  const GSCONFIG = {
+    scriptUrl : 'https://script.google.com/macros/s/AKfycbyY2Klpx9qtZM2fMVyvwAMGjBAQSD5oBZGPboeONr3wx5cRHCJ1K7EIBmbZ3rY7lP8/exec',
+    token     : 'Naama1234!2026',
+  };
+
   const SPCONFIG = {
     siteUrl    : 'https://VOTRE-ENTREPRISE.sharepoint.com/sites/VOTRE-SITE',
     folder     : '/sites/VOTRE-SITE/Documents partages/Resonance',
@@ -3530,6 +3504,45 @@
     return !SPCONFIG.siteUrl.includes('VOTRE-ENTREPRISE') &&
            !SPCONFIG.siteUrl.includes('VOTRE-SITE') &&
            SPCONFIG.siteUrl.startsWith('https://');
+  }
+
+  // ── Google Sheets API ────────────────────────────────────────────
+  let _GS_CONNECTED = false;
+  let _GS_OFFLINE   = false;
+
+  function gsIsConfigured() {
+    return !!GSCONFIG.scriptUrl && !!GSCONFIG.token;
+  }
+
+  async function gsCall(params) {
+    if(_GS_OFFLINE) throw new Error('GS offline');
+    const url = GSCONFIG.scriptUrl + '?' + new URLSearchParams({ ...params, token: GSCONFIG.token }).toString();
+    const resp = await fetch(url);
+    if(!resp.ok) throw new Error('GS HTTP ' + resp.status);
+    const data = await resp.json();
+    if(data.error) throw new Error(data.error);
+    return data;
+  }
+
+  async function gsGetConfig() {
+    const d = await gsCall({ action: 'getConfig' });
+    return d;
+  }
+
+  async function gsSaveConfig(cfg) {
+    await gsCall({ action: 'saveConfig', data: JSON.stringify(cfg) });
+  }
+
+  async function gsGetSiteData(siteId) {
+    return await gsCall({ action: 'getSiteData', siteId });
+  }
+
+  async function gsSaveSiteData(siteId, data) {
+    await gsCall({ action: 'saveSiteData', siteId, data: JSON.stringify(data) });
+  }
+
+  async function gsSaveLog(logEntry) {
+    try { await gsCall({ action: 'saveLog', data: JSON.stringify(logEntry) }); } catch(e) {}
   }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -3642,15 +3655,16 @@
         siteId:      user.siteId || null,
         siteLabel:   site ? site.label : null,
         timestamp:   new Date().toISOString(),
-        userAgent:   navigator.userAgent.substring(0, 100),
       };
       try {
         const raw  = localStorage.getItem(LOGIN_LOG_KEY) || '[]';
         const logs = JSON.parse(raw);
-        logs.unshift(logEntry); // plus récent en premier
-        if(logs.length > 500) logs.splice(500); // garder les 500 derniers
+        logs.unshift(logEntry);
+        if(logs.length > 500) logs.splice(500);
         localStorage.setItem(LOGIN_LOG_KEY, JSON.stringify(logs));
       } catch(e) {}
+      // Envoyer aussi vers Google Sheets
+      gsSaveLog(logEntry);
 
       document.getElementById('login-overlay').classList.remove('visible');
       updateSessionBadge();
@@ -3659,7 +3673,7 @@
       if(supBanner) supBanner.classList.toggle('visible', isSupervisor());
       // Masquer les boutons d'action pour le superviseur
       if(isSupervisor()) applySupervisorMode();
-      if(SP_OFFLINE && spIsConfigured()) toast('⚠️ Mode hors-ligne — SharePoint inaccessible');
+      if(_GS_OFFLINE) toast('⚠️ Mode hors-ligne — Google Sheets inaccessible');
       else toast('Bonjour, ' + SESSION.displayName + ' 👋');
       // Vérifier si des permissions fichiers sont nécessaires
       setTimeout(checkAndShowFileAccessBtn, 300);
@@ -3763,6 +3777,7 @@
   }
 
   function doLogout() {
+    stopGSPolling();
     if(!confirm('Se déconnecter de Resonance ?')) return;
     sessionClear();
     // Déconnecter le fichier local AVANT de nullifier SESSION
@@ -3784,6 +3799,8 @@
     if(headerAdminBtn) headerAdminBtn.style.display = 'none';
     const fileAccessBtn = document.getElementById('file-access-btn');
     if(fileAccessBtn) fileAccessBtn.classList.remove('visible');
+    const greetingEl = document.getElementById('header-greeting');
+    if(greetingEl) greetingEl.style.display = 'none';
     document.getElementById('login-username').value = '';
     document.getElementById('login-password').value = '';
     document.getElementById('login-error').classList.remove('visible');
@@ -3794,23 +3811,29 @@
   // ── Badge session dans le header ──
   function updateSessionBadge() {
     if(!SESSION) return;
-    const badge   = document.getElementById('session-badge');
-    const av      = document.getElementById('session-avatar');
-    const name    = document.getElementById('session-name');
-    const site    = document.getElementById('session-site');
-    const adminBtn= document.getElementById('sp-admin-btn');
+    const badge    = document.getElementById('session-badge');
+    const av       = document.getElementById('session-avatar');
+    const nameEl   = document.getElementById('session-name');
+    const adminBtn = document.getElementById('sp-admin-btn');
 
     badge.style.display = 'flex';
-    av.textContent  = (SESSION.displayName||'?').slice(0,2).toUpperCase();
-    name.textContent = SESSION.displayName;
-    const isPersistent = !!SESSION._persistent;
-    site.textContent = SESSION.siteLabel + (isPersistent ? ' · 📌' : '') + (SESSION._openedByAdmin ? ' · 🛡️' : '');
-    site.title = isPersistent ? 'Session mémorisée' : SESSION._openedByAdmin ? 'Session ouverte par admin' : '';
-    if(adminBtn) adminBtn.style.display = 'none'; // retiré des paramètres
-    // Bouton Admin dans le header
+
+    // Avatar : initiales du nom affiché
+    av.textContent   = (SESSION.displayName||SESSION.login||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    // Badge logout : identifiant de connexion (ex: admin.naama)
+    nameEl.textContent = SESSION.login;
+
+    // Greeting 2 lignes : nom affiché (ex: Administrateur Naama)
+    const greetingEl   = document.getElementById('header-greeting');
+    const greetingName = document.getElementById('header-greeting-name');
+    if(greetingEl && greetingName) {
+      greetingName.textContent = SESSION.displayName || SESSION.login;
+      greetingEl.style.display = 'flex';
+    }
+
+    if(adminBtn) adminBtn.style.display = 'none';
     const headerAdminBtn = document.getElementById('header-admin-btn');
     if(headerAdminBtn) headerAdminBtn.style.display = SESSION.role==='admin' ? 'flex' : 'none';
-    // Bouton retour admin
     const backBtn = document.getElementById('admin-back-btn');
     if(backBtn) backBtn.classList.toggle('visible', !!SESSION._openedByAdmin);
   }
@@ -3893,25 +3916,28 @@
     if(!r.ok) throw new Error('Cannot create SP file: ' + filename);
   }
 
-  // Lecture de la config (resonance-config.json)
+  // Lecture de la config (Google Sheets)
   async function loadConfig() {
-    if(SP_OFFLINE || !spIsConfigured()) return loadConfigOffline();
-    try {
-      const text = await spReadFile(SPCONFIG.configFile);
-      const cfg  = JSON.parse(text);
-      localStorage.setItem('rnc_config_cache', text);
-      return cfg;
-    } catch(e) {
-      console.warn('SP config unavailable, using cache:', e);
-      SP_OFFLINE = true;
-      return loadConfigOffline();
+    if(gsIsConfigured() && !_GS_OFFLINE) {
+      try {
+        const cfg = await gsGetConfig();
+        _GS_CONNECTED = true;
+        localStorage.setItem('rnc_config_cache', JSON.stringify(cfg));
+        updateSheetStatusUI();
+        return cfg;
+      } catch(e) {
+        console.warn('GS loadConfig failed, using cache:', e);
+        _GS_OFFLINE   = true;
+        _GS_CONNECTED = false;
+        updateSheetStatusUI();
+      }
     }
+    return loadConfigOffline();
   }
 
   function loadConfigOffline() {
     const raw = localStorage.getItem('rnc_config_cache');
     if(raw) { try { return JSON.parse(raw); } catch(e){} }
-    // Config vierge — le compte admin sera injecté par bootstrapFirstRun
     return { sites: [], users: [] };
   }
 
@@ -3919,69 +3945,70 @@
     const text = JSON.stringify(cfg, null, 2);
     localStorage.setItem('rnc_config_cache', text);
     RNC_CONFIG = cfg;
-    if(!SP_OFFLINE) {
-      try { await spWriteFile(SPCONFIG.configFile, text); }
-      catch(e) { console.warn('Cannot save config to SP:', e); }
+    if(gsIsConfigured() && !_GS_OFFLINE) {
+      try { await gsSaveConfig(cfg); }
+      catch(e) { console.warn('GS saveConfig failed:', e); }
     }
   }
 
-  // ── Lecture des données du site ──
+  function updateSheetStatusUI() {
+    const el   = document.getElementById('sp-sheet-status');
+    const text = document.getElementById('sp-sheet-status-text');
+    if(!el || !text) return;
+    if(_GS_CONNECTED) {
+      el.className = 'sender-status connected';
+      text.textContent = '✓ Google Sheets connecté';
+    } else {
+      el.className = 'sender-status disconnected';
+      text.textContent = 'localStorage (mode hors-ligne)';
+    }
+  }
+
+  // ── Lecture/écriture données site via Google Sheets ──
   let _spSaveTimer = null;
   let _spSaveInProgress = false;
 
   async function initDataFromSharePoint() {
     if(!SESSION) return;
 
-    // Mettre à jour SK et recharger les settings propres à cette session
-    SK = getSK();
+    SK  = getSK();
     CFG = loadSettings();
-    SENDER = CFG.senderEmail || DEFAULT_SETTINGS.senderEmail;
     applySettings();
 
-    if(!SESSION.dataFile) return; // admin global sans site
+    if(!SESSION.siteId) return; // admin global sans site
 
-    // Essayer d'abord le fichier local si disponible
-    const localData = await loadFromSiteFile(SESSION.siteId);
-    if(localData) {
-      if(localData.accueil)        dataA      = localData.accueil;
-      if(localData.courrier)       dataC      = localData.courrier;
-      if(localData.collaborateurs) dataCollab = localData.collaborateurs;
-      localStorage.setItem(getSK().accueil,  JSON.stringify(dataA));
-      localStorage.setItem(getSK().courrier, JSON.stringify(dataC));
-      localStorage.setItem(getSK().collabs,  JSON.stringify(dataCollab));
-      updateKPIs(); populateSelects(); renderCollabs(); renderAccueil(); renderCourrier(); renderScheduledToday();
-      if(typeof renderRapport === 'function') renderRapport();
-      restoreFileHandle();
-      await syncSiteHandleToUI(); // synchronise l'affichage dans les settings
-      return; // fichier local prioritaire
-    }
-
-    try {
-      if(!SP_OFFLINE && spIsConfigured()) {
-        const text = await spReadFile(SESSION.dataFile);
-        const data = JSON.parse(text);
+    if(gsIsConfigured() && !_GS_OFFLINE) {
+      try {
+        const data = await gsGetSiteData(SESSION.siteId);
+        _GS_CONNECTED = true;
+        updateSheetStatusUI();
         if(data.accueil)        dataA      = data.accueil;
         if(data.courrier)       dataC      = data.courrier;
         if(data.collaborateurs) dataCollab = data.collaborateurs;
-        // Mise en cache local namespaceée
         localStorage.setItem(getSK().accueil,  JSON.stringify(dataA));
         localStorage.setItem(getSK().courrier, JSON.stringify(dataC));
         localStorage.setItem(getSK().collabs,  JSON.stringify(dataCollab));
-      } else {
-        // Mode hors-ligne : charger depuis le cache namespaceé
+      } catch(e) {
+        console.warn('GS load failed, using localStorage:', e);
+        _GS_OFFLINE   = true;
+        _GS_CONNECTED = false;
+        updateSheetStatusUI();
         dataA      = load('accueil');
         dataC      = load('courrier');
         dataCollab = load('collabs');
       }
-    } catch(e) {
-      console.warn('Cannot load data from SP, using localStorage:', e);
-      SP_OFFLINE = true;
+    } else {
       dataA      = load('accueil');
       dataC      = load('courrier');
       dataCollab = load('collabs');
     }
+
     updateKPIs(); populateSelects(); renderCollabs(); renderAccueil(); renderCourrier(); renderScheduledToday();
     if(typeof renderRapport === 'function') renderRapport();
+
+    // Polling toutes les 30 secondes
+    if(gsIsConfigured()) startGSPolling();
+
     // Auto-checkout : passé immédiatement, ce soir planifié
     autoCheckoutPast();
     scheduleAutoCheckout();
@@ -4001,43 +4028,69 @@
 
   // Sauvegarde SharePoint — debounced + merge anti-conflit
   function scheduleSPSave() {
-    if(!spIsConfigured()) return; // SP non configuré — pas d'indicateur
+    if(!gsIsConfigured()) return;
     clearTimeout(_spSaveTimer);
-    _spSaveTimer = setTimeout(doSPSave, 1200);
+    _spSaveTimer = setTimeout(doSPSave, 1500);
     showSyncIndicator('saving');
   }
 
   async function doSPSave() {
-    if(!SESSION || !SESSION.dataFile) return;
-    if(SP_OFFLINE || !spIsConfigured()) {
-      // Même sans SP, sauvegarder dans le fichier local du site si disponible
-      await saveToSiteFile(SESSION.siteId);
-      return;
-    }
+    if(!SESSION || !SESSION.siteId) return;
+    if(!gsIsConfigured() || _GS_OFFLINE) return;
     if(_spSaveInProgress) { scheduleSPSave(); return; }
     _spSaveInProgress = true;
     try {
-      // Lire version actuelle et merger pour éviter les conflits
-      let merged = { accueil: dataA, courrier: dataC, collaborateurs: dataCollab };
-      try {
-        const current = JSON.parse(await spReadFile(SESSION.dataFile));
-        merged = mergeData(current, { accueil: dataA, courrier: dataC, collaborateurs: dataCollab });
-      } catch(e) { /* fichier n'existe pas encore */ }
-
-      dataA = merged.accueil; dataC = merged.courrier; dataCollab = merged.collaborateurs;
+      await gsSaveSiteData(SESSION.siteId, {
+        accueil: dataA, courrier: dataC, collaborateurs: dataCollab
+      });
       localStorage.setItem(SK.accueil,  JSON.stringify(dataA));
       localStorage.setItem(SK.courrier, JSON.stringify(dataC));
       localStorage.setItem(SK.collabs,  JSON.stringify(dataCollab));
-
-      await spWriteFile(SESSION.dataFile, buildSharedPayload());
-      // Sauvegarder aussi dans le fichier local si disponible
-      await saveToSiteFile(SESSION.siteId);
       showSyncIndicator('ok');
     } catch(e) {
-      console.warn('SP save failed:', e);
+      console.warn('GS save failed:', e);
       showSyncIndicator('error');
     } finally {
       _spSaveInProgress = false;
+    }
+  }
+
+  // ── Polling Google Sheets (30s) ──────────────────────────────────
+  let _gsPollingTimer = null;
+
+  function startGSPolling() {
+    stopGSPolling();
+    _gsPollingTimer = setInterval(pollGSData, 30000);
+  }
+
+  function stopGSPolling() {
+    if(_gsPollingTimer) { clearInterval(_gsPollingTimer); _gsPollingTimer = null; }
+  }
+
+  async function pollGSData() {
+    if(!SESSION || !SESSION.siteId || !gsIsConfigured() || _GS_OFFLINE) return;
+    try {
+      const data = await gsGetSiteData(SESSION.siteId);
+      const remoteA = JSON.stringify(data.accueil || []);
+      const remoteC = JSON.stringify(data.courrier || []);
+      const remoteK = JSON.stringify(data.collaborateurs || []);
+      const localA  = JSON.stringify(dataA);
+      const localC  = JSON.stringify(dataC);
+      const localK  = JSON.stringify(dataCollab);
+
+      if(remoteA !== localA || remoteC !== localC || remoteK !== localK) {
+        dataA      = data.accueil        || dataA;
+        dataC      = data.courrier       || dataC;
+        dataCollab = data.collaborateurs || dataCollab;
+        localStorage.setItem(SK.accueil,  JSON.stringify(dataA));
+        localStorage.setItem(SK.courrier, JSON.stringify(dataC));
+        localStorage.setItem(SK.collabs,  JSON.stringify(dataCollab));
+        updateKPIs(); populateSelects(); renderCollabs(); renderAccueil(); renderCourrier(); renderScheduledToday();
+        showSyncIndicator('ok');
+        console.log('[Resonance] Données mises à jour depuis Google Sheets');
+      }
+    } catch(e) {
+      console.warn('GS poll failed:', e);
     }
   }
 
@@ -4829,8 +4882,8 @@ Resonance by Naama
     // Onglet actif par défaut : Réglages
     switchSettingsTab('tech');
 
-    // Populate fields
-    $('sp-sender-name').value    = CFG.senderName || '';
+    // Populate fields — onglet Réglages
+    // (nom affiché retiré — signature Outlook utilisée directement)
 
     // Organisation — chargée par site
     const org = loadSiteOrg();
@@ -4849,11 +4902,14 @@ Resonance by Naama
     $('sp-enable-checkout').checked = CFG.enableCheckout !== false; // true par défaut
     $('sp-confirm-delete').checked  = CFG.confirmDelete;
 
-    // Label stockage dynamique
-    const storageTitle = document.getElementById('sp-storage-title');
-    if(storageTitle) storageTitle.textContent = spIsConfigured()
-      ? 'Stockage SharePoint'
-      : 'Stockage local (fichier PC)';
+    // Statut stockage
+    const sheetStatusEl = document.getElementById('sp-sheet-status');
+    const sheetTextEl   = document.getElementById('sp-sheet-status-text');
+    if(sheetStatusEl && sheetTextEl) {
+      const connected = window._GS_CONNECTED === true;
+      sheetStatusEl.className = 'sender-status ' + (connected ? 'connected' : 'disconnected');
+      sheetTextEl.textContent  = connected ? 'Google Sheets connecté ✓' : 'localStorage (mode local)';
+    }
 
     // Sections admin-only : masquer pour non-admins
     ['sp-section-stockage','sp-section-donnees'].forEach(id => {
@@ -4952,9 +5008,6 @@ Resonance by Naama
   function saveSettings() {
     CFG = {
       ...CFG,
-      senderName:       $('sp-sender-name').value.trim() || DEFAULT_SETTINGS.senderName,
-      signature:        $('sp-signature').value.trim(),
-      signatureEnabled: $('sp-signature-enabled').checked,
       autoNotify:       $('sp-auto-notify').checked,
       mailClient:       CFG._selectedMailClient || CFG.mailClient || 'mailto',
       showKpi:          $('sp-show-kpi').checked,
