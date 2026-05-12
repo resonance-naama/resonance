@@ -4104,7 +4104,7 @@
   function scheduleSPSave() {
     if(!gsIsConfigured()) return;
     clearTimeout(_spSaveTimer);
-    _spSaveTimer = setTimeout(doSPSave, 1500);
+    _spSaveTimer = setTimeout(doSPSave, 3000);
     showSyncIndicator('saving');
   }
 
@@ -4142,7 +4142,9 @@
   }
 
   async function pollGSData() {
+    // Ne pas poller si une sauvegarde est en cours ou planifiée
     if(!SESSION || !SESSION.siteId || !gsIsConfigured() || _GS_OFFLINE) return;
+    if(_spSaveInProgress || _spSaveTimer) return;
     try {
       const data = await gsGetSiteData(SESSION.siteId);
       const remoteA = JSON.stringify(data.accueil || []);
@@ -5271,7 +5273,7 @@ Resonance by Naama
   function save(k,a) {
     localStorage.setItem(getSK()[k], JSON.stringify(a));
     scheduleFileSave();
-    if(SESSION && SESSION.dataFile) scheduleSPSave();
+    if(SESSION && SESSION.siteId) scheduleSPSave();
   }
 
   let dataA      = load('accueil');
