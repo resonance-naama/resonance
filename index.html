@@ -2142,7 +2142,7 @@
         <span class="sender-status-dot"></span>
         <span id="sp-sheet-status-text">localStorage (mode local)</span>
       </div>
-      <div class="sp-info">
+      <div class="sp-info" id="sp-sheet-info">
         🔄 En attente de connexion Google Sheets — les données seront automatiquement synchronisées entre tous les postes une fois le service activé.
       </div>
     </div>
@@ -3971,13 +3971,16 @@
   function updateSheetStatusUI() {
     const el   = document.getElementById('sp-sheet-status');
     const text = document.getElementById('sp-sheet-status-text');
+    const info = document.getElementById('sp-sheet-info');
     if(!el || !text) return;
     if(window._GS_CONNECTED) {
-      el.className = 'sender-status connected';
+      el.className   = 'sender-status connected';
       text.textContent = '✓ Google Sheets connecté';
+      if(info) info.textContent = '✅ Synchronisation active — toutes les modifications sont enregistrées en temps réel dans Google Sheets et partagées entre les postes.';
     } else {
-      el.className = 'sender-status disconnected';
+      el.className   = 'sender-status disconnected';
       text.textContent = 'localStorage (mode hors-ligne)';
+      if(info) info.textContent = '🔄 En attente de connexion Google Sheets — les données seront automatiquement synchronisées entre tous les postes une fois le service activé.';
     }
   }
 
@@ -4919,14 +4922,8 @@ Resonance by Naama
     $('sp-enable-checkout').checked = CFG.enableCheckout !== false; // true par défaut
     $('sp-confirm-delete').checked  = CFG.confirmDelete;
 
-    // Statut stockage
-    const sheetStatusEl = document.getElementById('sp-sheet-status');
-    const sheetTextEl   = document.getElementById('sp-sheet-status-text');
-    if(sheetStatusEl && sheetTextEl) {
-      const connected = window._GS_CONNECTED === true;
-      sheetStatusEl.className = 'sender-status ' + (connected ? 'connected' : 'disconnected');
-      sheetTextEl.textContent  = connected ? 'Google Sheets connecté ✓' : 'localStorage (mode local)';
-    }
+    // Statut stockage — toujours à jour à l'ouverture
+    updateSheetStatusUI();
 
     // Sections admin-only : masquer pour non-admins
     ['sp-section-stockage','sp-section-donnees'].forEach(id => {
