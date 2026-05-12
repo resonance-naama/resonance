@@ -3516,10 +3516,14 @@
 
   async function gsCall(params) {
     if(_GS_OFFLINE) throw new Error('GS offline');
-    const url = GSCONFIG.scriptUrl + '?' + new URLSearchParams({ ...params, token: GSCONFIG.token }).toString();
-    const resp = await fetch(url);
+    const urlParams = new URLSearchParams({ ...params, token: GSCONFIG.token });
+    const url = GSCONFIG.scriptUrl + '?' + urlParams.toString();
+    const resp = await fetch(url, { redirect: 'follow' });
     if(!resp.ok) throw new Error('GS HTTP ' + resp.status);
-    const data = await resp.json();
+    const text = await resp.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch(e) { throw new Error('GS réponse invalide : ' + text.slice(0, 100)); }
     if(data.error) throw new Error(data.error);
     return data;
   }
@@ -3844,17 +3848,29 @@
       const el = document.getElementById(id);
       if(el) el.addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
     });
-    // Préremplir si session existante
+    // Restaurer session
     const saved = sessionLoad();
     if(saved) {
       SESSION = saved;
-      // Charger les données depuis SP et afficher directement
-      initDataFromSharePoint().then(()=>{
+      // Recharger la config depuis GS puis les données du site
+      loadConfig().then(cfg => {
+        RNC_CONFIG = cfg;
+        // Retrouver le site de l'utilisateur
+        const user = (cfg.users||[]).find(u => u.login === SESSION.login);
+        if(user) {
+          const site = user.siteId ? (cfg.sites||[]).find(s => s.id === user.siteId) : null;
+          SESSION.siteLabel = site ? site.label : (user.role === 'admin' ? 'Tous les sites' : '—');
+          SESSION.dataFile  = site ? site.dataFile : null;
+        }
+        return initDataFromSharePoint();
+      }).then(()=>{
         document.getElementById('login-overlay').classList.remove('visible');
         updateSessionBadge();
+        const supBanner = document.getElementById('supervisor-banner');
+        if(supBanner) supBanner.classList.toggle('visible', isSupervisor());
+        if(isSupervisor()) applySupervisorMode();
+        setTimeout(showRgpdIfNeeded, 600);
       }).catch(()=>{
-        // Session expirée ou SP injoignable
-        SP_OFFLINE = true;
         document.getElementById('login-overlay').classList.remove('visible');
         updateSessionBadge();
       });
