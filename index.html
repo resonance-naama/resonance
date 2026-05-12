@@ -4124,7 +4124,7 @@
       localStorage.setItem(SK.collabs,  JSON.stringify(dataCollab));
       showSyncIndicator('ok');
     } catch(e) {
-      console.warn('GS save failed:', e);
+      console.error('[Resonance] GS save failed:', e.message, e);
       showSyncIndicator('error');
       // Réessayer dans 10s
       setTimeout(() => scheduleSPSave(), 10000);
@@ -4202,7 +4202,7 @@
     clearTimeout(_syncHideTimer);
     el.classList.add('show');
     dot.className = 'sp-sync-dot' + (state==='saving' ? ' saving' : state==='error' ? ' error' : '');
-    txt.textContent = state==='saving' ? 'Sauvegarde SharePoint…' : state==='error' ? 'Erreur de sync' : state==='offline' ? 'Mode hors-ligne' : 'Synchronisé ✓';
+    txt.textContent = state==='saving' ? 'Sauvegarde…' : state==='error' ? 'Erreur de sync Google Sheets' : state==='offline' ? 'Mode hors-ligne' : '✓ Synchronisé';
     if(state !== 'saving') _syncHideTimer = setTimeout(()=>el.classList.remove('show'), 2500);
   }
 
