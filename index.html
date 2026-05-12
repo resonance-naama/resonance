@@ -3594,8 +3594,24 @@
     return await gsCall({ action: 'getSiteData', siteId });
   }
 
+  // Sauvegarde par morceaux (contourne la limite 8KB des URLs GET)
+  const GS_CHUNK_SIZE = 1800;
+
   async function gsSaveSiteData(siteId, data) {
-    await gsCall({ action: 'saveSiteData', siteId, data: JSON.stringify(data) });
+    const fields = ['accueil', 'courrier', 'collaborateurs'];
+    // Envoyer chaque champ en morceaux
+    for (const field of fields) {
+      const str    = JSON.stringify(data[field] || []);
+      const chunks = [];
+      for (let i = 0; i < str.length; i += GS_CHUNK_SIZE) {
+        chunks.push(str.slice(i, i + GS_CHUNK_SIZE));
+      }
+      for (let idx = 0; idx < chunks.length; idx++) {
+        await gsCall({ action: 'saveChunk', siteId, field, idx: String(idx), chunk: chunks[idx] });
+      }
+    }
+    // Fusionner tous les morceaux en une seule opération
+    await gsCall({ action: 'mergeChunks', siteId, fields: JSON.stringify(fields) });
   }
 
   async function gsSaveLog(logEntry) {
