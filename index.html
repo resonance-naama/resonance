@@ -3595,7 +3595,7 @@
   }
 
   // Sauvegarde par morceaux (contourne la limite 8KB des URLs GET)
-  const GS_CHUNK_SIZE = 1800;
+  const GS_CHUNK_SIZE = 4000;
 
   async function gsSaveSiteData(siteId, data) {
     const fields = ['accueil', 'courrier', 'collaborateurs'];
