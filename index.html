@@ -4109,6 +4109,7 @@
   }
 
   async function doSPSave() {
+    _spSaveTimer = null; // important : libérer le verrou polling
     if(!SESSION || !SESSION.siteId) return;
     if(!gsIsConfigured() || _GS_OFFLINE) return;
     if(_spSaveInProgress) { scheduleSPSave(); return; }
@@ -4117,6 +4118,7 @@
       await gsSaveSiteData(SESSION.siteId, {
         accueil: dataA, courrier: dataC, collaborateurs: dataCollab
       });
+      _lastGSSave = Date.now();
       localStorage.setItem(SK.accueil,  JSON.stringify(dataA));
       localStorage.setItem(SK.courrier, JSON.stringify(dataC));
       localStorage.setItem(SK.collabs,  JSON.stringify(dataCollab));
@@ -4124,10 +4126,14 @@
     } catch(e) {
       console.warn('GS save failed:', e);
       showSyncIndicator('error');
+      // Réessayer dans 10s
+      setTimeout(() => scheduleSPSave(), 10000);
     } finally {
       _spSaveInProgress = false;
     }
   }
+
+  let _lastGSSave = 0;
 
   // ── Polling Google Sheets (30s) ──────────────────────────────────
   let _gsPollingTimer = null;
@@ -4142,13 +4148,15 @@
   }
 
   async function pollGSData() {
-    // Ne pas poller si une sauvegarde est en cours ou planifiée
     if(!SESSION || !SESSION.siteId || !gsIsConfigured() || _GS_OFFLINE) return;
+    // Ne pas poller si sauvegarde en cours ou récente (< 10s)
     if(_spSaveInProgress || _spSaveTimer) return;
+    if(Date.now() - _lastGSSave < 10000) return;
     try {
       const data = await gsGetSiteData(SESSION.siteId);
-      const remoteA = JSON.stringify(data.accueil || []);
-      const remoteC = JSON.stringify(data.courrier || []);
+      if(!data) return;
+      const remoteA = JSON.stringify(data.accueil        || []);
+      const remoteC = JSON.stringify(data.courrier       || []);
       const remoteK = JSON.stringify(data.collaborateurs || []);
       const localA  = JSON.stringify(dataA);
       const localC  = JSON.stringify(dataC);
@@ -4163,7 +4171,6 @@
         localStorage.setItem(SK.collabs,  JSON.stringify(dataCollab));
         updateKPIs(); populateSelects(); renderCollabs(); renderAccueil(); renderCourrier(); renderScheduledToday();
         showSyncIndicator('ok');
-        console.log('[Resonance] Données mises à jour depuis Google Sheets');
       }
     } catch(e) {
       console.warn('GS poll failed:', e);
