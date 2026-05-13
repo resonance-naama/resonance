@@ -2,10 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="app-version" content="20260512-4">
+<meta name="app-version" content="20260512-6">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Resonance — by Naama</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23546456"/><text x="16" y="23" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">n</text></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='30' height='30' rx='7' fill='%23253728'/%3E%3Ccircle cx='5' cy='24' r='2.6' fill='white'/%3E%3Cpath d='M5 21.5 C5.2 16.8 7.8 12.8 12 10.2 C15.6 8 19.5 7.8 22.5 9.2' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M5 24 C3.5 17 6 9.5 12.5 5.5 C17.5 2.4 23 2.8 26.5 5.8' stroke='white' stroke-width='2' stroke-linecap='round' opacity='0.6'/%3E%3Cpath d='M5 24 C5.5 13 12 4.5 22 1.8 C24.5 1.1 27 1.5 28.5 3' stroke='white' stroke-width='1.6' stroke-linecap='round' opacity='0.25'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1063,10 +1063,11 @@
   }
   .login-eye-btn:hover { color: var(--muted); }
   .login-btn {
-    width: 100%; padding: 11px; background: var(--leaf); color: white;
-    border: none; border-radius: var(--radius-sm); font-family: 'Outfit', sans-serif;
+    width: 100%; padding: 11px; background: #546456 !important; color: #fff !important;
+    border: none !important; border-radius: var(--radius-sm); font-family: 'Outfit', sans-serif;
     font-size: 14px; font-weight: 500; cursor: pointer; margin-top: .25rem;
-    transition: background .15s; display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .15s; display: flex !important; align-items: center; justify-content: center; gap: 8px;
+    visibility: visible !important; opacity: 1 !important;
   }
   .login-btn:hover { background: var(--leaf-hover); }
   .login-btn:disabled { opacity: .6; cursor: default; }
