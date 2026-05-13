@@ -3353,8 +3353,51 @@
       </div>
 
     </div><!-- /cat-modal-body -->
-    <div style="padding:.85rem 1.5rem;background:var(--ecru);border-top:1px solid var(--border-soft);display:flex;justify-content:flex-end;gap:8px">
+    <div style="padding:.85rem 1.5rem;background:var(--ecru);border-top:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline btn-sm" onclick="exportCatCSV()" title="Exporter le catalogue en CSV">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exporter CSV
+        </button>
+        <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0" title="Importer un fichier CSV">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Importer CSV
+          <input type="file" accept=".csv,text/csv" style="display:none" onchange="importCatCSV(this)">
+        </label>
+      </div>
       <button class="btn btn-outline" onclick="closeCatModal()">Fermer</button>
+    </div>
+
+    <!-- Zone prévisualisation import -->
+    <div id="cat-import-preview" style="display:none;border-top:1px solid var(--border-soft);background:var(--cream)">
+      <div style="padding:.85rem 1.5rem">
+        <div style="font-size:12px;font-weight:600;color:var(--forest);margin-bottom:.6rem;display:flex;align-items:center;gap:8px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Prévisualisation — <span id="cat-import-count"></span> article(s) détecté(s)
+        </div>
+        <div style="overflow-x:auto;max-height:180px;border:1px solid var(--border-soft);border-radius:var(--radius-sm)">
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <thead><tr style="background:var(--ecru)">
+              <th style="padding:5px 10px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Article</th>
+              <th style="padding:5px 10px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Catégorie</th>
+              <th style="padding:5px 10px;text-align:right;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Prix TTC</th>
+            </tr></thead>
+            <tbody id="cat-import-tbody"></tbody>
+          </table>
+        </div>
+        <div id="cat-import-errors" style="display:none;margin-top:.6rem;font-size:11px;color:var(--danger);background:var(--danger-light);padding:.5rem .75rem;border-radius:var(--radius-sm)"></div>
+        <div style="display:flex;gap:8px;margin-top:.85rem;align-items:center">
+          <select class="form-control" id="cat-import-mode" style="font-size:12px;padding:6px 10px;width:auto">
+            <option value="merge">Fusionner avec le catalogue existant</option>
+            <option value="replace">Remplacer entièrement le catalogue</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="confirmCatImport()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Importer
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="cancelCatImport()">Annuler</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -9587,7 +9630,97 @@ ${service}${sigPart}`;
     if(!confirm('Supprimer cet article du catalogue ?')) return;
     savePrsCat(loadPrsCat().filter(a=>a.id!==id)); renderCatTable(); toast('Article supprim\xe9 du catalogue');
   }
-</script>
+
+  /* ═══════════════════════════════════════════════
+     CATALOGUE — Export / Import CSV
+  ═══════════════════════════════════════════════ */
+
+  function exportCatCSV() {
+    const cat = loadPrsCat();
+    if(!cat.length) { toast('Le catalogue est vide \u2014 rien \xe0 exporter'); return; }
+    const catLabels = { vetements:'V\xeatements', linge:'Linge maison', autre:'Autre' };
+    const header = ['Article','Cat\xe9gorie','Prix TTC (\u20ac)'];
+    const rows = cat.map(a => [
+      a.label,
+      catLabels[a.categorie||'autre'] || a.categorie,
+      parseFloat(a.prix).toFixed(2).replace('.',',')
+    ].map(v => '"' + String(v).replace(/"/g,'""') + '"'));
+    const csv = '\ufeff' + [header.map(h=>'"'+h+'"'), ...rows].map(r=>r.join(';')).join('\r\n');
+    const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'catalogue_pressing_' + today() + '.csv'; a.click();
+    URL.revokeObjectURL(url);
+    toast('Catalogue export\xe9 en CSV');
+  }
+
+  let _catImportData = [];
+
+  function importCatCSV(input) {
+    const file = input.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e => parseCatCSV(e.target.result);
+    reader.readAsText(file, 'UTF-8');
+    input.value = '';
+  }
+
+  function parseCatCSV(text) {
+    const clean = text.replace(/^\ufeff/, '').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+    const lines  = clean.split('\n').filter(l => l.trim());
+    if(lines.length < 2) { toast('\u26a0\ufe0f Fichier vide ou format invalide'); return; }
+    const catMap = { 'v\xeatements':'vetements','vetements':'vetements','linge maison':'linge','linge':'linge','autre':'autre' };
+    const sep    = lines[0].includes(';') ? ';' : ',';
+    const errors = [];
+    _catImportData = [];
+
+    for(let i = 1; i < lines.length; i++) {
+      const cols   = lines[i].split(sep).map(c => c.trim().replace(/^"|"$/g,'').trim());
+      const label  = cols[0] || '';
+      const catRaw = (cols[1] || 'autre').toLowerCase();
+      const prixRaw= (cols[2] || '0').replace(',','.');
+      const prix   = parseFloat(prixRaw);
+      if(!label) continue;
+      if(isNaN(prix) || prix < 0) { errors.push('Ligne ' + (i+1) + ' : prix invalide'); continue; }
+      _catImportData.push({ id:'art_'+Date.now()+'_'+i, label, prix, categorie: catMap[catRaw]||'autre' });
+    }
+
+    if(!_catImportData.length) { toast('\u26a0\ufe0f Aucun article valide trouv\xe9'); return; }
+
+    const catLabels = { vetements:'V\xeatements', linge:'Linge maison', autre:'Autre' };
+    $('cat-import-count').textContent = _catImportData.length;
+    $('cat-import-tbody').innerHTML = _catImportData.map(a=>
+      '<tr style="border-bottom:1px solid var(--border-soft)">' +
+      '<td style="padding:4px 10px">' + esc(a.label) + '</td>' +
+      '<td style="padding:4px 10px;color:var(--muted)">' + (catLabels[a.categorie]||a.categorie) + '</td>' +
+      '<td style="padding:4px 10px;text-align:right;font-weight:500;color:var(--forest)">' + a.prix.toFixed(2).replace('.',',') + ' \u20ac</td>' +
+      '</tr>').join('');
+
+    const errDiv = $('cat-import-errors');
+    if(errors.length) { errDiv.style.display=''; errDiv.innerHTML = '\u26a0\ufe0f ' + errors.join('<br>\u26a0\ufe0f '); }
+    else errDiv.style.display = 'none';
+    $('cat-import-preview').style.display = '';
+  }
+
+  function confirmCatImport() {
+    if(!_catImportData.length) return;
+    const mode = $('cat-import-mode').value;
+    let cat = loadPrsCat();
+    if(mode === 'replace') {
+      cat = _catImportData;
+      toast(_catImportData.length + ' article(s) import\xe9(s) — catalogue remplac\xe9');
+    } else {
+      const existing = new Set(cat.map(a=>a.label.toLowerCase()));
+      const toAdd = _catImportData.filter(a => !existing.has(a.label.toLowerCase()));
+      cat = [...cat, ...toAdd];
+      toast(toAdd.length + ' article(s) ajout\xe9(s), ' + (_catImportData.length - toAdd.length) + ' ignor\xe9(s) (d\xe9j\xe0 pr\xe9sents)');
+    }
+    savePrsCat(cat); renderCatTable(); cancelCatImport();
+  }
+
+  function cancelCatImport() {
+    _catImportData = [];
+    const p = $('cat-import-preview'); if(p) p.style.display = 'none';
+  }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
   /* ══════════════════════════════════════
