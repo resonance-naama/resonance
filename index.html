@@ -3633,23 +3633,27 @@
     return await gsCall({ action: 'getSiteData', siteId });
   }
 
-  // Sauvegarde par morceaux (contourne la limite 8KB des URLs GET)
-  const GS_CHUNK_SIZE = 4000;
+  // POST n'a plus la limite 8KB des URLs GET → chunks bien plus grands
+  // En pratique, 1 seul chunk par champ pour la quasi-totalité des sites
+  const GS_CHUNK_SIZE = 48000;
 
   async function gsSaveSiteData(siteId, data) {
     const fields = ['accueil', 'courrier', 'collaborateurs'];
-    // Envoyer chaque champ en morceaux
+
+    // Construire tous les appels chunk en une liste de promises
+    const chunkCalls = [];
     for (const field of fields) {
-      const str    = JSON.stringify(data[field] || []);
-      const chunks = [];
-      for (let i = 0; i < str.length; i += GS_CHUNK_SIZE) {
-        chunks.push(str.slice(i, i + GS_CHUNK_SIZE));
-      }
-      for (let idx = 0; idx < chunks.length; idx++) {
-        await gsCall({ action: 'saveChunk', siteId, field, idx: String(idx), chunk: chunks[idx] });
+      const str = JSON.stringify(data[field] || []);
+      for (let i = 0, idx = 0; i < str.length; i += GS_CHUNK_SIZE, idx++) {
+        const chunk = str.slice(i, i + GS_CHUNK_SIZE);
+        chunkCalls.push(gsCall({ action: 'saveChunk', siteId, field, idx: String(idx), chunk }));
       }
     }
-    // Fusionner tous les morceaux en une seule opération
+
+    // Envoyer tous les chunks en parallèle (au lieu de séquentiellement)
+    await Promise.all(chunkCalls);
+
+    // Fusionner en une seule opération
     await gsCall({ action: 'mergeChunks', siteId, fields: JSON.stringify(fields) });
   }
 
