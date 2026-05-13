@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="app-version" content="20260513-3">
+<meta name="app-version" content="20260513-7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Resonance — by Naama</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='30' height='30' rx='7' fill='%23253728'/%3E%3Ccircle cx='5' cy='24' r='2.6' fill='white'/%3E%3Cpath d='M5 21.5 C5.2 16.8 7.8 12.8 12 10.2 C15.6 8 19.5 7.8 22.5 9.2' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M5 24 C3.5 17 6 9.5 12.5 5.5 C17.5 2.4 23 2.8 26.5 5.8' stroke='white' stroke-width='2' stroke-linecap='round' opacity='0.6'/%3E%3Cpath d='M5 24 C5.5 13 12 4.5 22 1.8 C24.5 1.1 27 1.5 28.5 3' stroke='white' stroke-width='1.6' stroke-linecap='round' opacity='0.25'/%3E%3C/svg%3E">
@@ -136,7 +136,82 @@
   .active-blue   { color: var(--leaf)   !important; border-bottom-color: var(--leaf)   !important; background: var(--sage-light) !important; }
   .active-gold   { color: var(--gold)   !important; border-bottom-color: var(--gold)   !important; background: var(--gold-light) !important; }
   .active-teal   { color: #495F50 !important; border-bottom-color: #495F50 !important; background: #DDE8E4 !important; }
-  .active-purple { color: #5A3A8A !important; border-bottom-color: #5A3A8A !important; background: #F2EEF9 !important; }
+  .active-coral  { color: #9B5E3A !important; border-bottom-color: #C07050 !important; background: #FBF2EC !important; }
+
+  /* ══ MODULE CONCIERGERIE — Pressing ══ */
+  .conc-services-nav { display:flex; gap:6px; margin-bottom:1.25rem; flex-wrap:wrap; }
+  .conc-srv-btn { display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:var(--radius); border:1.5px solid var(--border); background:var(--ivory); cursor:pointer; font-family:'Outfit',sans-serif; font-size:13px; font-weight:500; color:var(--muted); transition:all .15s; }
+  .conc-srv-btn:hover { border-color:var(--leaf); color:var(--leaf); background:var(--sage-light); }
+  .conc-srv-btn.active { border-color:var(--leaf); background:var(--leaf); color:white; }
+  .conc-srv-btn.coming-soon { opacity:.5; cursor:default; pointer-events:none; }
+  .conc-srv-icon { font-size:16px; }
+  .conc-kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:1.25rem; }
+  .conc-kpi { background:var(--ivory); border-radius:var(--radius-sm); padding:.75rem 1rem; border:1.5px solid var(--border); }
+  .conc-kpi-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:.35rem; }
+  .conc-kpi-val { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:600; color:var(--forest); line-height:1; }
+  .conc-kpi.ck-orange { border-top:3px solid #F59E0B; }
+  .conc-kpi.ck-green  { border-top:3px solid var(--sage); }
+  .conc-kpi.ck-blue   { border-top:3px solid var(--leaf); }
+  .conc-kpi.ck-gold   { border-top:3px solid var(--gold); }
+  .conc-toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:1rem; }
+  .conc-filters { display:flex; gap:4px; background:var(--ivory); border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:3px; }
+  .conc-filter-btn { padding:5px 12px; border:none; border-radius:4px; font-family:'Outfit',sans-serif; font-size:12px; font-weight:500; cursor:pointer; color:var(--muted); background:transparent; transition:all .15s; }
+  .conc-filter-btn:hover { background:var(--ecru); color:var(--text); }
+  .conc-filter-btn.active { background:var(--forest); color:white; }
+  .pressing-table { width:100%; border-collapse:collapse; }
+  .pressing-table th { text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); padding:.5rem .75rem; border-bottom:2px solid var(--border); white-space:nowrap; }
+  .pressing-table td { padding:.6rem .75rem; border-bottom:1px solid var(--border-soft); font-size:13px; vertical-align:middle; }
+  .pressing-table tr:hover td { background:var(--ecru); }
+  .prs-badge { display:inline-flex; align-items:center; gap:4px; border-radius:999px; font-size:11px; font-weight:600; padding:2px 9px; white-space:nowrap; }
+  .prs-badge.depose  { background:#FFF8E7; color:#B45309; border:1px solid #FDE68A; }
+  .prs-badge.pret    { background:#ECFDF5; color:#065F46; border:1px solid #6EE7B7; }
+  .prs-badge.remis   { background:var(--ecru); color:var(--muted); border:1px solid var(--border); }
+  .prs-pay-wrap { display:flex; align-items:center; gap:5px; }
+  .prs-pay-wrap label { display:flex; align-items:center; gap:5px; cursor:pointer; font-size:11px; color:var(--muted); }
+  .prs-pay-wrap input { width:14px; height:14px; cursor:pointer; accent-color:var(--leaf); }
+  .prs-pay-wrap.paid label { color:#065F46; font-weight:600; }
+  /* Modal pressing */
+  .prs-modal-bg { display:none; position:fixed; inset:0; background:rgba(37,55,40,.6); z-index:600; align-items:center; justify-content:center; padding:1rem; }
+  .prs-modal-bg.open { display:flex; animation:fadeIn .2s ease; }
+  .prs-modal { background:var(--ivory); border-radius:var(--radius); box-shadow:var(--shadow-lg); width:100%; max-width:820px; max-height:92vh; display:flex; flex-direction:column; border:1px solid var(--border-soft); overflow:hidden; }
+  .prs-modal-head { background:var(--forest); padding:.9rem 1.5rem; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .prs-modal-title { color:white; font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; display:flex; align-items:center; gap:10px; }
+  .prs-modal-body { flex:1; overflow-y:auto; padding:1.25rem 1.5rem; }
+  .prs-modal-foot { padding:.85rem 1.5rem; background:var(--ecru); border-top:1px solid var(--border-soft); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; flex-wrap:wrap; gap:8px; }
+  /* Grille articles */
+  .prs-articles-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:5px; margin-bottom:.5rem; }
+  .prs-article-item { display:flex; align-items:center; gap:7px; padding:6px 10px; border:1.5px solid var(--border); border-radius:var(--radius-sm); background:var(--ivory); transition:border-color .12s; }
+  .prs-article-item.has-qty { border-color:var(--leaf); background:var(--sage-light); }
+  .prs-article-label { flex:1; font-size:12px; color:var(--text); line-height:1.3; }
+  .prs-article-prix { font-size:11px; color:var(--muted); white-space:nowrap; }
+  .prs-article-qty { display:none; }
+  .prs-stepper { display:flex; align-items:center; flex-shrink:0; border:1.5px solid var(--border); border-radius:6px; overflow:hidden; transition:border-color .12s; }
+  .prs-article-item.has-qty .prs-stepper { border-color:var(--leaf); }
+  .prs-step-btn { width:26px; height:26px; border:none; background:var(--ecru); color:var(--muted); font-size:17px; font-weight:600; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .1s,color .1s; flex-shrink:0; user-select:none; padding:0; }
+  .prs-step-btn:hover { background:var(--leaf); color:white; }
+  .prs-step-val { width:30px; text-align:center; font-size:13px; font-weight:600; font-family:'Outfit',sans-serif; color:var(--forest); background:var(--ivory); line-height:26px; pointer-events:none; }
+  .prs-cat-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--leaf); margin:.75rem 0 .4rem; }
+  .prs-total-bar { background:var(--forest); color:white; border-radius:var(--radius-sm); padding:.65rem 1rem; display:flex; align-items:center; justify-content:space-between; margin-top:.75rem; }
+  .prs-total-label { font-size:12px; opacity:.7; }
+  .prs-total-val { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; }
+  .prs-art-chip { background:var(--sage-light); color:var(--forest); border-radius:999px; font-size:11px; padding:2px 9px; border:1px solid rgba(84,100,86,.2); display:inline-block; margin:1px; }
+  .prs-empty { text-align:center; padding:3rem 1rem; color:var(--muted); }
+  .prs-empty-icon { font-size:40px; margin-bottom:.75rem; }
+  .prs-empty-cat { text-align:center; padding:2rem 1rem; color:var(--muted); font-size:13px; }
+  /* Catalogue modal */
+  .cat-modal-bg { display:none; position:fixed; inset:0; background:rgba(37,55,40,.55); z-index:650; align-items:center; justify-content:center; padding:1rem; }
+  .cat-modal-bg.open { display:flex; animation:fadeIn .2s ease; }
+  .cat-modal { background:var(--ivory); border-radius:var(--radius); box-shadow:var(--shadow-lg); width:100%; max-width:680px; max-height:90vh; display:flex; flex-direction:column; border:1px solid var(--border-soft); overflow:hidden; }
+  .cat-modal-head { background:var(--forest); padding:.9rem 1.5rem; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .cat-modal-title { color:white; font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; }
+  .cat-modal-body { flex:1; overflow-y:auto; padding:1.25rem 1.5rem; }
+  .cat-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .cat-table th { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); padding:.5rem .75rem; border-bottom:2px solid var(--border); text-align:left; }
+  .cat-table td { padding:.5rem .75rem; border-bottom:1px solid var(--border-soft); vertical-align:middle; }
+  .cat-table tr:hover td { background:var(--ecru); }
+  .cat-add-row { display:grid; grid-template-columns:1fr 120px 120px auto; gap:8px; align-items:end; padding:.75rem; background:var(--sage-light); border-radius:var(--radius-sm); margin-bottom:1rem; border:1px solid rgba(84,100,86,.2); }
+  @media(max-width:700px){ .prs-articles-grid{grid-template-columns:1fr 1fr} .pressing-table th:nth-child(4),.pressing-table td:nth-child(4){ display:none } }
+
   .active-stats  { color: var(--gold) !important; border-bottom-color: var(--gold) !important; background: var(--gold-light) !important; }
   [data-theme="dark"] .active-stats { background: var(--gold-light) !important; }
   .tab-icon { width: 16px; height: 16px; flex-shrink: 0; }
@@ -679,7 +754,15 @@
   }
   .rgpd-checkbox-label { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); cursor: pointer; }
 
-  /* ── Panel Superviseur ── */
+  /* ── Modules actifs (visibilité onglets par site) ── */
+  .sp-modules-grid { display:flex; flex-direction:column; gap:6px; }
+  .sp-module-row { display:flex; align-items:center; justify-content:space-between; padding:.55rem .75rem; background:var(--cream); border:1px solid var(--border-soft); border-radius:var(--radius-sm); }
+  .sp-module-info { display:flex; align-items:center; gap:9px; }
+  .sp-module-icon { width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; background:var(--ecru); flex-shrink:0; }
+  .sp-module-label { font-size:13px; font-weight:500; color:var(--text); }
+  .sp-module-sub { font-size:11px; color:var(--muted); }
+  .sp-module-row.sp-module-disabled { opacity:.5; }
+
   .supervisor-panel-bg {
     display: none; position: fixed; inset: 0; z-index: 400;
     background: rgba(37,55,40,.5); align-items: flex-start; justify-content: flex-end;
@@ -1402,7 +1485,7 @@
       </label>
       <div class="login-error" id="login-error"></div>
     </div>
-    <div class="login-footer" id="login-version-badge">Resonance Beta V0.6 — by Naama</div>
+    <div class="login-footer" id="login-version-badge">Resonance Beta V0.7 — by Naama</div>
   </div>
 </div>
 
@@ -2309,6 +2392,50 @@
         Activez le toggle pour ajouter une signature à vos e-mails.
       </div>
     </div>
+
+    <!-- Modules actifs — admin/manager uniquement -->
+    <div class="sp-section" id="sp-section-modules" style="display:none">
+      <div class="sp-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Modules actifs
+        <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0">Appliqué à tous les agents du site</span>
+      </div>
+      <div class="sp-modules-grid">
+        <div class="sp-module-row" id="sp-mod-row-accueil">
+          <div class="sp-module-info">
+            <div class="sp-module-icon">👥</div>
+            <div>
+              <div class="sp-module-label">Fréquentation accueil</div>
+              <div class="sp-module-sub">Gestion des visiteurs et visites programmées</div>
+            </div>
+          </div>
+          <input type="checkbox" class="sp-toggle" id="sp-mod-accueil" checked onchange="onModuleToggle()">
+        </div>
+        <div class="sp-module-row" id="sp-mod-row-courrier">
+          <div class="sp-module-info">
+            <div class="sp-module-icon">📬</div>
+            <div>
+              <div class="sp-module-label">Plis &amp; Colis</div>
+              <div class="sp-module-sub">Réception et distribution du courrier</div>
+            </div>
+          </div>
+          <input type="checkbox" class="sp-toggle" id="sp-mod-courrier" checked onchange="onModuleToggle()">
+        </div>
+        <div class="sp-module-row" id="sp-mod-row-conciergerie">
+          <div class="sp-module-info">
+            <div class="sp-module-icon">🧺</div>
+            <div>
+              <div class="sp-module-label">Conciergerie</div>
+              <div class="sp-module-sub">Pressing et services aux collaborateurs</div>
+            </div>
+          </div>
+          <input type="checkbox" class="sp-toggle" id="sp-mod-conciergerie" checked onchange="onModuleToggle()">
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--hint);margin-top:.6rem;padding:.5rem .65rem;background:var(--sage-light);border-radius:var(--radius-sm);border:1px solid rgba(84,100,86,.15)">
+        ℹ️ Désactiver un module masque l'onglet pour tous les agents. Les données existantes sont conservées.
+      </div>
+    </div>
   </div>
 
   <!-- ══ ONGLET 3 — E-MAIL ══ -->
@@ -2502,6 +2629,10 @@
     <button class="tab-btn" id="tab-courrier" onclick="switchTab('courrier')">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Plis &amp; Colis
+    </button>
+    <button class="tab-btn" id="tab-conciergerie" onclick="switchTab('conciergerie')">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 22V8a1 1 0 011-1h3V4a1 1 0 011-1h8a1 1 0 011 1v3h3a1 1 0 011 1v14"/><path d="M12 22V11m-4 11V11m8 11V11"/></svg>
+      Conciergerie
     </button>
     <button class="tab-btn" id="tab-collabs" onclick="switchTab('collabs')">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -2941,7 +3072,292 @@
     </div>
   </div>
 
+  <!-- ═══ CONCIERGERIE — PRESSING ═══ -->
+  <div class="tab-panel" id="panel-conciergerie">
+
+    <!-- Navigation services -->
+    <div class="conc-services-nav">
+      <button class="conc-srv-btn active" id="conc-srv-pressing" onclick="switchConcService('pressing')">
+        <span class="conc-srv-icon">🧺</span> Pressing
+      </button>
+      <button class="conc-srv-btn coming-soon" title="À venir">
+        <span class="conc-srv-icon">👟</span> Cordonnerie
+        <span style="font-size:9px;background:var(--ecru);border-radius:999px;padding:1px 6px;margin-left:2px;color:var(--hint)">Bientôt</span>
+      </button>
+      <button class="conc-srv-btn coming-soon" title="À venir">
+        <span class="conc-srv-icon">🪡</span> Retouche
+        <span style="font-size:9px;background:var(--ecru);border-radius:999px;padding:1px 6px;margin-left:2px;color:var(--hint)">Bientôt</span>
+      </button>
+      <button class="conc-srv-btn coming-soon" title="À venir">
+        <span class="conc-srv-icon">🥗</span> Bio Culture
+        <span style="font-size:9px;background:var(--ecru);border-radius:999px;padding:1px 6px;margin-left:2px;color:var(--hint)">Bientôt</span>
+      </button>
+      <button class="conc-srv-btn coming-soon" title="À venir">
+        <span class="conc-srv-icon">🚗</span> Lavage Auto
+        <span style="font-size:9px;background:var(--ecru);border-radius:999px;padding:1px 6px;margin-left:2px;color:var(--hint)">Bientôt</span>
+      </button>
+    </div>
+
+    <!-- SERVICE PRESSING -->
+    <div id="conc-panel-pressing">
+
+      <!-- KPIs -->
+      <div class="conc-kpi-row">
+        <div class="conc-kpi ck-orange">
+          <div class="conc-kpi-label">En attente</div>
+          <div class="conc-kpi-val" id="prs-kpi-attente">0</div>
+        </div>
+        <div class="conc-kpi ck-green">
+          <div class="conc-kpi-label">Prêts à retirer</div>
+          <div class="conc-kpi-val" id="prs-kpi-pret">0</div>
+        </div>
+        <div class="conc-kpi ck-blue">
+          <div class="conc-kpi-label">Remis ce mois</div>
+          <div class="conc-kpi-val" id="prs-kpi-remis">0</div>
+        </div>
+        <div class="conc-kpi ck-gold">
+          <div class="conc-kpi-label">CA estimé (mois)</div>
+          <div class="conc-kpi-val" id="prs-kpi-ca">0 €</div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="conc-toolbar">
+        <div class="conc-filters">
+          <button class="conc-filter-btn active" id="prs-f-tous"   onclick="setPrsFilter('tous')">Tous</button>
+          <button class="conc-filter-btn" id="prs-f-depose" onclick="setPrsFilter('depose')">🟡 Déposé</button>
+          <button class="conc-filter-btn" id="prs-f-pret"   onclick="setPrsFilter('pret')">🟢 Prêt</button>
+          <button class="conc-filter-btn" id="prs-f-remis"  onclick="setPrsFilter('remis')">✅ Remis</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn btn-outline btn-sm no-print" onclick="openCatModal()" title="Gérer le catalogue d'articles">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Catalogue
+          </button>
+          <button class="btn btn-primary no-print" onclick="openPrsModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouveau dépôt
+          </button>
+        </div>
+      </div>
+
+      <!-- Avertissement catalogue vide -->
+      <div id="prs-cat-warning" style="display:none;margin-bottom:1rem;padding:.65rem 1rem;background:#FFF8E7;border:1px solid #FDE68A;border-radius:var(--radius-sm);font-size:12px;color:#B45309;display:flex;align-items:center;gap:8px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Catalogue vide — cliquez sur <strong style="margin:0 3px">Catalogue</strong> pour ajouter des articles et leurs prix avant d'enregistrer des dépôts.
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="card-body" style="padding:0;overflow-x:auto">
+          <table class="pressing-table" id="prs-table">
+            <thead>
+              <tr>
+                <th>Ticket</th>
+                <th>Dépôt</th>
+                <th>Client</th>
+                <th>Société</th>
+                <th>Articles</th>
+                <th>Total TTC</th>
+                <th>Statut</th>
+                <th>Payé SumUp</th>
+                <th class="no-print">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="prs-tbody">
+              <tr><td colspan="9" class="prs-empty">
+                <div class="prs-empty-icon">🧺</div>
+                <div>Aucune commande pressing.</div>
+                <div style="font-size:12px;margin-top:4px">Cliquez sur <strong>Nouveau dépôt</strong> pour commencer.</div>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /conc-panel-pressing -->
+
+  </div>
+  <!-- /conciergerie -->
+
 </main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODALE PRESSING
+════════════════════════════════════════════════════════════════ -->
+<div class="prs-modal-bg" id="modal-pressing">
+  <div class="prs-modal">
+    <div class="prs-modal-head">
+      <span class="prs-modal-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <span id="prs-modal-title-text">Nouveau dépôt pressing</span>
+      </span>
+      <button style="background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:20px;padding:2px 6px" onclick="closePrsModal()">✕</button>
+    </div>
+    <div class="prs-modal-body">
+      <input type="hidden" id="prs-edit-id">
+
+      <!-- Ticket + Date + Statut -->
+      <div class="form-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Informations commande
+      </div>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:1rem">
+        <div class="form-group">
+          <label class="form-label">N° Ticket <span class="req">*</span></label>
+          <input class="form-control" id="prs-ticket" type="text" placeholder="ex : 7001" style="font-family:monospace;font-weight:600;font-size:15px">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date de dépôt <span class="req">*</span></label>
+          <input class="form-control" id="prs-date-depot" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Statut</label>
+          <select class="form-control" id="prs-statut">
+            <option value="depose">🟡 Déposé</option>
+            <option value="pret">🟢 Prêt</option>
+            <option value="remis">✅ Remis</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Infos client -->
+      <div class="form-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Client
+      </div>
+      <div class="form-grid" style="margin-bottom:1rem">
+        <div class="form-group">
+          <label class="form-label">Prénom</label>
+          <input class="form-control" id="prs-prenom" placeholder="ex : Marie">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom <span class="req">*</span></label>
+          <input class="form-control" id="prs-nom" placeholder="ex : Dupont">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Société</label>
+          <div style="position:relative" id="prs-societe-wrap">
+            <input class="form-control" id="prs-societe" placeholder="ex : Rémy Cointreau" autocomplete="off" oninput="filterPrsSocieteList(this.value)" onblur="setTimeout(()=>{ const l=$('prs-societe-list'); if(l) l.style.display='none'; },150)">
+            <ul id="prs-societe-list" style="position:absolute;z-index:400;background:var(--ivory);border:1.5px solid var(--leaf);border-radius:var(--radius-sm);max-height:180px;overflow-y:auto;width:100%;display:none;box-shadow:var(--shadow-md);padding:4px 0;list-style:none;margin:0"></ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Téléphone</label>
+          <input class="form-control" id="prs-tel" placeholder="ex : 06 12 34 56 78" type="tel">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-control" id="prs-email" placeholder="ex : marie.dupont@co.com" type="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date de remise prévue</label>
+          <input class="form-control" id="prs-date-remise-prevue" type="date">
+        </div>
+      </div>
+
+      <!-- Articles du catalogue -->
+      <div class="form-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        Articles — saisir les quantités
+      </div>
+      <div id="prs-articles-container">
+        <div class="prs-empty-cat">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--hint)" stroke-width="1.5" style="margin-bottom:.5rem"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><br>
+          Catalogue vide — <button type="button" class="btn btn-outline btn-sm" style="display:inline-flex" onclick="closePrsModal();openCatModal()">Gérer le catalogue</button>
+        </div>
+      </div>
+
+      <!-- Récap total -->
+      <div class="prs-total-bar" id="prs-total-wrap" style="display:none">
+        <span class="prs-total-label">Total TTC estimé</span>
+        <span class="prs-total-val" id="prs-total-display">0,00 €</span>
+      </div>
+
+      <!-- Commentaires -->
+      <div class="form-group" style="margin-top:1rem">
+        <label class="form-label">Commentaires / Instructions spéciales</label>
+        <textarea class="form-control" id="prs-commentaire" rows="2" placeholder="Article spécial, instructions particulières…" style="resize:vertical"></textarea>
+      </div>
+
+    </div><!-- /prs-modal-body -->
+    <div class="prs-modal-foot">
+      <div style="font-size:12px;color:var(--muted)">
+        💳 Le paiement s'effectue via <strong>SumUp</strong> à la remise du linge
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline" onclick="closePrsModal()">Annuler</button>
+        <button class="btn btn-primary" onclick="savePrsCommande()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Enregistrer le dépôt
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODALE CATALOGUE PRESSING (par site — stocké dans le JSON)
+════════════════════════════════════════════════════════════════ -->
+<div class="cat-modal-bg" id="modal-cat-pressing">
+  <div class="cat-modal">
+    <div class="cat-modal-head">
+      <span class="cat-modal-title">🗂️ Catalogue pressing — Articles &amp; prix</span>
+      <button style="background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:20px;padding:2px 6px" onclick="closeCatModal()">✕</button>
+    </div>
+    <div class="cat-modal-body">
+
+      <div style="font-size:12px;color:var(--muted);margin-bottom:1rem;padding:.6rem .85rem;background:var(--sage-light);border-radius:var(--radius-sm);border:1px solid rgba(84,100,86,.2)">
+        💡 Ce catalogue est propre à votre site. Les articles et prix que vous définissez ici seront disponibles lors des saisies de dépôts.
+      </div>
+
+      <!-- Formulaire ajout / modification -->
+      <div class="cat-add-row" id="cat-add-form">
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-size:10px">Libellé article <span class="req">*</span></label>
+          <input class="form-control" id="cat-label" placeholder="ex : Chemise" style="font-size:13px;padding:7px 10px">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-size:10px">Catégorie</label>
+          <select class="form-control" id="cat-categorie" style="font-size:13px;padding:7px 10px">
+            <option value="vetements">Vêtements</option>
+            <option value="linge">Linge maison</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-size:10px">Prix TTC (€) <span class="req">*</span></label>
+          <input class="form-control" id="cat-prix" type="number" min="0" step="0.01" placeholder="0,00" style="font-size:13px;padding:7px 10px">
+        </div>
+        <div>
+          <label class="form-label" style="font-size:10px;visibility:hidden">_</label>
+          <button class="btn btn-primary btn-sm" id="cat-save-btn" onclick="saveCatArticle()" style="width:100%;padding:7px 12px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="cat-save-label">Ajouter</span>
+          </button>
+        </div>
+      </div>
+      <input type="hidden" id="cat-edit-id">
+      <div id="cat-edit-cancel-row" style="display:none;margin-bottom:.75rem">
+        <button class="btn btn-outline btn-sm" onclick="cancelCatEdit()">✕ Annuler la modification</button>
+      </div>
+
+      <!-- Tableau du catalogue -->
+      <div style="overflow-x:auto">
+        <table class="cat-table">
+          <thead><tr><th>Article</th><th>Catégorie</th><th>Prix TTC</th><th style="width:90px">Actions</th></tr></thead>
+          <tbody id="cat-tbody">
+            <tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--muted);font-size:13px">Aucun article. Ajoutez-en ci-dessus.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /cat-modal-body -->
+    <div style="padding:.85rem 1.5rem;background:var(--ecru);border-top:1px solid var(--border-soft);display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn btn-outline" onclick="closeCatModal()">Fermer</button>
+    </div>
+  </div>
+</div>
 
 <!-- Modale édition visite -->
 <div class="distrib-modal-bg" id="modal-edit-visit">
@@ -3640,12 +4056,14 @@
   const GS_CHUNK_SIZE = 48000;
 
   async function gsSaveSiteData(siteId, data) {
-    const fields = ['accueil', 'courrier', 'collaborateurs'];
+    const fields = ['accueil', 'courrier', 'collaborateurs', 'pressing', 'pressingCatalogue'];
 
     // Construire tous les appels chunk en une liste de promises
     const chunkCalls = [];
     for (const field of fields) {
-      const str = JSON.stringify(data[field] || []);
+      const val = data[field];
+      if(val === undefined || val === null) continue; // ne pas écraser si non fourni
+      const str = JSON.stringify(val);
       for (let i = 0, idx = 0; i < str.length; i += GS_CHUNK_SIZE, idx++) {
         const chunk = str.slice(i, i + GS_CHUNK_SIZE);
         chunkCalls.push(gsCall({ action: 'saveChunk', siteId, field, idx: String(idx), chunk }));
@@ -3655,8 +4073,9 @@
     // Envoyer tous les chunks en parallèle (au lieu de séquentiellement)
     await Promise.all(chunkCalls);
 
-    // Fusionner en une seule opération
-    await gsCall({ action: 'mergeChunks', siteId, fields: JSON.stringify(fields) });
+    // Fusionner en une seule opération — uniquement les champs effectivement envoyés
+    const sentFields = fields.filter(f => data[f] !== undefined && data[f] !== null);
+    await gsCall({ action: 'mergeChunks', siteId, fields: JSON.stringify(sentFields) });
   }
 
   async function gsSaveLog(logEntry) {
@@ -3791,6 +4210,8 @@
       if(supBanner) supBanner.classList.toggle('visible', isSupervisor());
       // Masquer les boutons d'action pour le superviseur
       if(isSupervisor()) applySupervisorMode();
+      // Appliquer la visibilité des onglets selon la config du site
+      applyTabVisibility();
       if(_GS_OFFLINE) toast('⚠️ Mode hors-ligne — Google Sheets inaccessible');
       else toast('Bonjour, ' + SESSION.displayName + ' 👋');
       // Vérifier si des permissions fichiers sont nécessaires
@@ -4177,7 +4598,8 @@
     _spSaveInProgress = true;
     try {
       await gsSaveSiteData(SESSION.siteId, {
-        accueil: dataA, courrier: dataC, collaborateurs: dataCollab
+        accueil: dataA, courrier: dataC, collaborateurs: dataCollab,
+        pressing: loadPrsData(), pressingCatalogue: loadPrsCat()
       });
       _lastGSSave   = Date.now();
       _gsFailCount  = 0; // réinitialiser le compteur d'échecs
@@ -4231,18 +4653,27 @@
       const remoteA = JSON.stringify(data.accueil        || []);
       const remoteC = JSON.stringify(data.courrier       || []);
       const remoteK = JSON.stringify(data.collaborateurs || []);
+      const remotePrs = JSON.stringify(data.pressing          || []);
+      const remoteCat = JSON.stringify(data.pressingCatalogue || []);
       const localA  = JSON.stringify(dataA);
       const localC  = JSON.stringify(dataC);
       const localK  = JSON.stringify(dataCollab);
+      const localPrs = JSON.stringify(loadPrsData());
+      const localCat = JSON.stringify(loadPrsCat());
 
-      if(remoteA !== localA || remoteC !== localC || remoteK !== localK) {
+      if(remoteA !== localA || remoteC !== localC || remoteK !== localK
+         || remotePrs !== localPrs || remoteCat !== localCat) {
         dataA      = data.accueil        || dataA;
         dataC      = data.courrier       || dataC;
         dataCollab = data.collaborateurs || dataCollab;
         localStorage.setItem(SK.accueil,  JSON.stringify(dataA));
         localStorage.setItem(SK.courrier, JSON.stringify(dataC));
         localStorage.setItem(SK.collabs,  JSON.stringify(dataCollab));
+        if(data.pressing)          localStorage.setItem(getPrsKey(),    JSON.stringify(data.pressing));
+        if(data.pressingCatalogue) localStorage.setItem(getPrsCatKey(), JSON.stringify(data.pressingCatalogue));
         updateKPIs(); populateSelects(); renderCollabs(); renderAccueil(); renderCourrier(); renderScheduledToday();
+        if(document.getElementById('panel-conciergerie')?.classList.contains('active')) renderPressing();
+        applyTabVisibility();
         showSyncIndicator('ok');
       }
     } catch(e) {
@@ -4259,9 +4690,11 @@
       return Object.values(byId);
     }
     return {
-      accueil:        mergeArr(remote.accueil,        local.accueil),
-      courrier:       mergeArr(remote.courrier,        local.courrier),
-      collaborateurs: mergeArr(remote.collaborateurs,  local.collaborateurs),
+      accueil:           mergeArr(remote.accueil,           local.accueil),
+      courrier:          mergeArr(remote.courrier,          local.courrier),
+      collaborateurs:    mergeArr(remote.collaborateurs,    local.collaborateurs),
+      pressing:          mergeArr(remote.pressing,          local.pressing),
+      pressingCatalogue: mergeArr(remote.pressingCatalogue, local.pressingCatalogue),
     };
   }
 
@@ -5067,6 +5500,20 @@ Resonance by Naama
       if(el) el.style.display = canEditAdminParams() ? '' : 'none';
     });
 
+    // Section modules : visible uniquement admin/manager
+    const modSection = $('sp-section-modules');
+    if(modSection) modSection.style.display = canEditSiteParams() ? '' : 'none';
+
+    // Charger l'état des modules depuis siteOrg
+    if(canEditSiteParams()) {
+      const org = loadSiteOrg();
+      const hidden = org.hiddenTabs || [];
+      MANAGEABLE_TABS.forEach(t => {
+        const el = $('sp-mod-' + t);
+        if(el) el.checked = !hidden.includes(t);
+      });
+    }
+
     // Sections site : lecture seule pour worker
     const siteFieldIds = ['sp-org-name','sp-site-name','sp-service-name',
       'tpl-visiteur-subj','tpl-visiteur-body','tpl-courrier-subj','tpl-courrier-body'];
@@ -5168,10 +5615,15 @@ Resonance by Naama
 
     // Organisation et templates — sauvegardés par site uniquement si manager ou admin
     if(canEditSiteParams()) {
+      const hiddenTabs = ['accueil','courrier','conciergerie'].filter(t => {
+        const el = $('sp-mod-' + t);
+        return el && !el.checked;
+      });
       saveSiteOrg({
         orgName:     $('sp-org-name').value.trim()     || DEFAULT_SETTINGS.orgName,
         siteName:    $('sp-site-name').value.trim(),
         serviceName: $('sp-service-name').value.trim() || DEFAULT_SETTINGS.serviceName,
+        hiddenTabs,
       });
       saveSiteTemplates({
         tplVisiteurSubj: $('tpl-visiteur-subj').value.trim() || TPL_VISITEUR_SUBJ_DEFAULT,
@@ -5182,8 +5634,40 @@ Resonance by Naama
     }
 
     applySettings();
+    applyTabVisibility();
     closeSettings();
     toast('Paramètres enregistrés');
+  }
+
+  /* ── Visibilité des onglets par site ── */
+  const MANAGEABLE_TABS = ['accueil', 'courrier', 'conciergerie'];
+
+  function applyTabVisibility() {
+    const org = loadSiteOrg();
+    const hidden = org.hiddenTabs || [];
+
+    MANAGEABLE_TABS.forEach(t => {
+      const btn = $('tab-' + t);
+      const pnl = $('panel-' + t);
+      const isHidden = hidden.includes(t);
+      if(btn) btn.style.display = isHidden ? 'none' : '';
+      if(pnl && isHidden && pnl.classList.contains('active')) {
+        // Si l'onglet actif est masqué, basculer vers accueil ou le premier visible
+        const fallback = MANAGEABLE_TABS.concat(['collabs','dashboard','rapport','stats'])
+          .find(x => !hidden.includes(x));
+        if(fallback) switchTab(fallback);
+      }
+    });
+  }
+
+  function onModuleToggle() {
+    // Empêcher de tout désactiver (au moins 1 module doit rester actif)
+    const checked = MANAGEABLE_TABS.filter(t => $('sp-mod-' + t)?.checked);
+    if(checked.length === 0) {
+      // Remettre le dernier décoché
+      MANAGEABLE_TABS.forEach(t => { if($('sp-mod-' + t)) $('sp-mod-' + t).checked = true; });
+      toast('Au moins un module doit rester actif');
+    }
   }
 
   /* ─── Mail client selector ─── */
@@ -5300,7 +5784,9 @@ Resonance by Naama
   function exportBackup() {
     const backup = {
       version: 1, exportDate: new Date().toISOString(),
-      accueil: dataA, courrier: dataC, collaborateurs: dataCollab, settings: CFG
+      accueil: dataA, courrier: dataC, collaborateurs: dataCollab,
+      pressing: loadPrsData(), pressingCatalogue: loadPrsCat(),
+      settings: CFG
     };
     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -5318,10 +5804,12 @@ Resonance by Naama
         const data = JSON.parse(e.target.result);
         if(!data.version) { alert('Fichier de sauvegarde invalide.'); return; }
         if(!confirm('Importer cette sauvegarde ? Les données actuelles seront remplacées.')) return;
-        if(data.accueil)       { dataA=data.accueil; save('accueil',dataA); }
-        if(data.courrier)      { dataC=data.courrier; save('courrier',dataC); }
-        if(data.collaborateurs){ dataCollab=data.collaborateurs; save('collabs',dataCollab); }
-        if(data.settings)      { CFG={...DEFAULT_SETTINGS,...data.settings}; persistSettings(CFG); applySettings(); }
+        if(data.accueil)          { dataA=data.accueil; save('accueil',dataA); }
+        if(data.courrier)         { dataC=data.courrier; save('courrier',dataC); }
+        if(data.collaborateurs)   { dataCollab=data.collaborateurs; save('collabs',dataCollab); }
+        if(data.pressing)         { localStorage.setItem(getPrsKey(),    JSON.stringify(data.pressing)); }
+        if(data.pressingCatalogue){ localStorage.setItem(getPrsCatKey(), JSON.stringify(data.pressingCatalogue)); }
+        if(data.settings)         { CFG={...DEFAULT_SETTINGS,...data.settings}; persistSettings(CFG); applySettings(); }
         updateKPIs(); populateSelects(); renderCollabs(); renderAccueil(); renderCourrier(); renderScheduledToday();
         closeSettings();
         toast('Sauvegarde importée avec succès');
@@ -5345,7 +5833,7 @@ Resonance by Naama
   // Clés de données dynamiques par site — chaque site a son propre cache localStorage
   function getSK() {
     const sid = SESSION?.siteId || 'default';
-    return { accueil:`reg_acc_v4_${sid}`, courrier:`reg_cor_v4_${sid}`, collabs:`reg_col_v4_${sid}` };
+    return { accueil:`reg_acc_v4_${sid}`, courrier:`reg_cor_v4_${sid}`, collabs:`reg_col_v4_${sid}`, pressing:`reg_pressing_v1_${sid}` };
   }
   // SK reste pour compatibilité avec le code existant qui l'utilise directement
   let SK = getSK();
@@ -5359,6 +5847,7 @@ Resonance by Naama
   let dataA      = load('accueil');
   let dataC      = load('courrier');
   let dataCollab = load('collabs');
+  let dataPressing = load('pressing');
 
   /* ══ File System Access API ══ */
   const FS_IDB_NAME = 'naama_fs_v1';
@@ -5405,7 +5894,10 @@ Resonance by Naama
   function buildPayload() {
     return JSON.stringify({
       version: 2, savedAt: new Date().toISOString(),
-      accueil: dataA, courrier: dataC, collaborateurs: dataCollab, settings: CFG
+      accueil: dataA, courrier: dataC, collaborateurs: dataCollab,
+      pressing: loadPrsData(),
+      pressingCatalogue: loadPrsCat(),
+      settings: CFG
     }, null, 2);
   }
 
@@ -5435,10 +5927,12 @@ Resonance by Naama
       const file = await handle.getFile();
       const text = await file.text();
       const data = JSON.parse(text);
-      if(data.accueil)        { dataA      = data.accueil; localStorage.setItem(SK.accueil,  JSON.stringify(dataA)); }
-      if(data.courrier)       { dataC      = data.courrier; localStorage.setItem(SK.courrier, JSON.stringify(dataC)); }
-      if(data.collaborateurs) { dataCollab = data.collaborateurs; localStorage.setItem(SK.collabs, JSON.stringify(dataCollab)); }
-      if(data.settings)       { CFG = { ...DEFAULT_SETTINGS, ...data.settings }; persistSettings(CFG); }
+      if(data.accueil)            { dataA      = data.accueil; localStorage.setItem(SK.accueil,  JSON.stringify(dataA)); }
+      if(data.courrier)           { dataC      = data.courrier; localStorage.setItem(SK.courrier, JSON.stringify(dataC)); }
+      if(data.collaborateurs)     { dataCollab = data.collaborateurs; localStorage.setItem(SK.collabs, JSON.stringify(dataCollab)); }
+      if(data.pressing)           { localStorage.setItem(getPrsKey(),    JSON.stringify(data.pressing)); }
+      if(data.pressingCatalogue)  { localStorage.setItem(getPrsCatKey(), JSON.stringify(data.pressingCatalogue)); }
+      if(data.settings)           { CFG = { ...DEFAULT_SETTINGS, ...data.settings }; persistSettings(CFG); }
       return true;
     } catch(e) {
       console.warn('Could not read data file:', e);
@@ -5599,9 +6093,9 @@ Resonance by Naama
   }
 
   /* ─── Tabs ─── */
-  const tabCols = { accueil:'active-blue', courrier:'active-gold', collabs:'active-teal', dashboard:'active-blue', rapport:'active-purple', stats:'active-stats' };
+  const tabCols = { accueil:'active-blue', courrier:'active-gold', collabs:'active-teal', dashboard:'active-blue', rapport:'active-purple', stats:'active-stats', conciergerie:'active-coral' };
   function switchTab(name) {
-    ['accueil','courrier','collabs','rapport','stats','dashboard'].forEach(t=>{
+    ['accueil','courrier','collabs','rapport','stats','dashboard','conciergerie'].forEach(t=>{
       const btn=$('tab-'+t); if(btn) btn.className='tab-btn';
       const pnl=$('panel-'+t); if(pnl) pnl.classList.remove('active');
     });
@@ -5615,6 +6109,7 @@ Resonance by Naama
     }
     if(name==='stats') renderStats();
     if(name==='dashboard') renderDashboard();
+    if(name==='conciergerie') renderPressing();
   }
 
   /* ─── Dark mode ─── */
@@ -6036,7 +6531,7 @@ Resonance by Naama
       }
     });
     // Native selects for filters (they stay as <select>)
-    ['fa-collab','fc-collab'].forEach(id=>{
+    ['fa-collab','fc-collab','fp-collab'].forEach(id=>{
       const el=$(id); if(!el) return;
       const cur=el.value;
       el.innerHTML=`<option value="">Tous</option>`;
@@ -8810,6 +9305,288 @@ ${service}${sigPart}`;
   updateTodayBanner();
   purgeOldData();
 
+/* ═══════════════════════════════════════════════════════════════
+   CONCIERGERIE — PRESSING
+   Catalogue stocké dans le JSON site (pas de catalogue en dur)
+   Ticket saisie manuelle | Toutes entrées modifiables / statut modifiable
+═══════════════════════════════════════════════════════════════ */
+
+  /* ─── Clés storage pressing (par site) ─── */
+  function getPrsKey()    { return 'rnc_pressing_v1_' + (SESSION?.siteId || 'default'); }
+  function getPrsCatKey() { return 'rnc_prs_cat_v1_' + (SESSION?.siteId || 'default'); }
+
+  /* ─── Chargement / Sauvegarde données ─── */
+  function loadPrsData()  { try { return JSON.parse(localStorage.getItem(getPrsKey()) || '[]'); } catch(e) { return []; } }
+  function savePrsData(a) { localStorage.setItem(getPrsKey(), JSON.stringify(a)); scheduleFileSave(); if(SESSION?.siteId) scheduleSPSave(); }
+
+  /* ─── Catalogue (propre au site — stocké en localStorage + JSON) ─── */
+  function loadPrsCat()   { try { return JSON.parse(localStorage.getItem(getPrsCatKey()) || '[]'); } catch(e) { return []; } }
+  function savePrsCat(a)  { localStorage.setItem(getPrsCatKey(), JSON.stringify(a)); scheduleFileSave(); if(SESSION?.siteId) scheduleSPSave(); }
+
+  /* ─── Prochain numéro de ticket (suggestion, modifiable manuellement) ─── */
+  function nextPrsTicket() {
+    const data = loadPrsData();
+    const max  = data.reduce((m,x) => Math.max(m, parseInt(x.ticket)||0), 7000);
+    return (max + 1).toString();
+  }
+
+  /* ─── Mois courant (YYYY-MM) ─── */
+  function prsCurrentMonth() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+  }
+
+  /* ─── Filtre courant ─── */
+  let prsFilter = 'tous';
+  function setPrsFilter(f) {
+    prsFilter = f;
+    ['tous','depose','pret','remis'].forEach(x => {
+      const btn = $('prs-f-'+x); if(btn) btn.classList.toggle('active', x===f);
+    });
+    renderPrsTable();
+  }
+
+  /* ─── Navigation service ─── */
+  function switchConcService(srv) {
+    document.querySelectorAll('.conc-srv-btn').forEach(b => b.classList.remove('active'));
+    const btn = $('conc-srv-'+srv); if(btn) btn.classList.add('active');
+    document.querySelectorAll('[id^="conc-panel-"]').forEach(p => p.style.display='none');
+    const panel = $('conc-panel-'+srv); if(panel) panel.style.display='';
+  }
+
+  /* ─── Render principal ─── */
+  function renderPressing() {
+    renderPrsKpis();
+    renderPrsTable();
+    const cat = loadPrsCat();
+    const warn = $('prs-cat-warning');
+    if(warn) warn.style.display = cat.length ? 'none' : '';
+  }
+
+  /* ─── KPIs ─── */
+  function renderPrsKpis() {
+    const data = loadPrsData(), mo = prsCurrentMonth();
+    $('prs-kpi-attente') && ($('prs-kpi-attente').textContent = data.filter(x=>x.statut==='depose').length);
+    $('prs-kpi-pret')    && ($('prs-kpi-pret').textContent    = data.filter(x=>x.statut==='pret').length);
+    $('prs-kpi-remis')   && ($('prs-kpi-remis').textContent   = data.filter(x=>x.statut==='remis'&&(x.dateDepot||'').startsWith(mo)).length);
+    const ca = data.filter(x=>x.statut==='remis'&&(x.dateDepot||'').startsWith(mo)).reduce((s,x)=>s+(parseFloat(x.total)||0),0);
+    $('prs-kpi-ca')      && ($('prs-kpi-ca').textContent      = ca.toFixed(2).replace('.',',') + ' \u20ac');
+  }
+
+  /* ─── Tableau ─── */
+  function renderPrsTable() {
+    const tbody = $('prs-tbody'); if(!tbody) return;
+    const cat = loadPrsCat();
+    let data = loadPrsData();
+    if(prsFilter !== 'tous') data = data.filter(x=>x.statut===prsFilter);
+    data = data.slice().sort((a,b) => (b.dateDepot||'').localeCompare(a.dateDepot||''));
+
+    if(!data.length) {
+      const msgs = { tous:'Aucune commande pressing.', depose:'Aucun dépôt en attente.', pret:'Aucun article prêt.', remis:'Aucune commande remise.' };
+      tbody.innerHTML = `<tr><td colspan="9" class="prs-empty"><div class="prs-empty-icon">\U0001F9FA</div><div>${msgs[prsFilter]||'Aucune commande.'}</div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = data.map(c => {
+      const artChips = Object.entries(c.articles||{}).filter(([,q])=>parseInt(q)>0).map(([id,q]) => {
+        const art = cat.find(a=>a.id===id);
+        return `<span class="prs-art-chip">${esc(art?art.label:id)} \xd7${q}</span>`;
+      }).join('');
+      const badgeClass = c.statut==='depose'?'depose':c.statut==='pret'?'pret':'remis';
+      const badgeLabel = c.statut==='depose'?'\U0001F7E1 D\xe9pos\xe9':c.statut==='pret'?'\U0001F7E2 Pr\xeat':'\u2705 Remis';
+      let actionBtns = '';
+      if(c.statut==='depose') actionBtns += `<button class="btn btn-outline btn-sm" onclick="setPrsStatut('${c.id}','pret')">Marquer pr\xeat</button>`;
+      if(c.statut==='pret')   actionBtns += `<button class="btn btn-primary btn-sm" onclick="setPrsStatut('${c.id}','remis')">Confirmer remise</button>`;
+      actionBtns += `<button class="btn btn-outline btn-sm" onclick="openPrsModal('${c.id}')" title="Modifier">\u270f\ufe0f</button>`;
+      actionBtns += `<button class="btn btn-outline btn-sm" style="border-color:var(--danger);color:var(--danger)" onclick="deletePrsCommande('${c.id}')">\U0001F5D1</button>`;
+      return `<tr>
+        <td style="font-family:monospace;font-weight:700;color:var(--forest);font-size:14px">#${esc(c.ticket||'\u2014')}</td>
+        <td>${c.dateDepot?c.dateDepot.split('-').reverse().join('/'):'\u2014'}</td>
+        <td><div style="font-weight:500">${esc([c.prenom,c.nom].filter(Boolean).join(' '))||'\u2014'}</div>${c.tel?`<div style="font-size:11px;color:var(--muted)">${esc(c.tel)}</div>`:''}</td>
+        <td style="color:var(--muted)">${esc(c.societe||'\u2014')}</td>
+        <td style="max-width:220px">${artChips||'<span style="color:var(--muted)">\u2014</span>'}</td>
+        <td style="font-weight:600;white-space:nowrap">${(parseFloat(c.total)||0).toFixed(2).replace('.',',')} \u20ac</td>
+        <td><span class="prs-badge ${badgeClass}">${badgeLabel}</span></td>
+        <td><div class="prs-pay-wrap ${c.paye?'paid':''}"><label><input type="checkbox" ${c.paye?'checked':''} onchange="togglePrsPaye('${c.id}',this.checked)">${c.paye?'\u2713 Pay\xe9':'Non pay\xe9'}</label></div></td>
+        <td class="no-print" style="white-space:nowrap"><div style="display:flex;gap:4px;flex-wrap:wrap">${actionBtns}</div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function setPrsStatut(id, statut) {
+    const data = loadPrsData(), c = data.find(x=>x.id===id); if(!c) return;
+    c.statut = statut; if(statut==='remis') c.dateRemise = today();
+    savePrsData(data); renderPressing();
+    flashSuccess(statut==='pret'?'Article pr\xeat \u2705':'Remise confirm\xe9e');
+  }
+  function togglePrsPaye(id, val) {
+    const data = loadPrsData(), c = data.find(x=>x.id===id); if(!c) return;
+    c.paye = val; savePrsData(data); renderPrsTable();
+  }
+  function deletePrsCommande(id) {
+    if(!confirm('Supprimer cette commande pressing ?')) return;
+    savePrsData(loadPrsData().filter(x=>x.id!==id)); renderPressing(); flashSuccess('Commande supprim\xe9e');
+  }
+
+  /* ─── Modale dépôt ─── */
+  function openPrsModal(editId) {
+    const modal = $('modal-pressing'); if(!modal) return;
+    const cat = loadPrsCat();
+    ['prs-prenom','prs-nom','prs-societe','prs-tel','prs-email','prs-commentaire','prs-date-remise-prevue'].forEach(id=>{ const el=$(id); if(el) el.value=''; });
+    $('prs-edit-id').value = editId||'';
+    $('prs-modal-title-text').textContent = editId ? 'Modifier le d\xe9p\xf4t' : 'Nouveau d\xe9p\xf4t pressing';
+    $('prs-date-depot').value = today();
+    $('prs-statut').value = 'depose';
+    const ticketEl = $('prs-ticket');
+    if(ticketEl) ticketEl.value = editId ? '' : nextPrsTicket();
+    buildPrsArticleGrids(cat);
+    if(editId) {
+      const data = loadPrsData(), c = data.find(x=>x.id===editId);
+      if(c) {
+        if(ticketEl) ticketEl.value = c.ticket||'';
+        $('prs-prenom').value = c.prenom||''; $('prs-nom').value = c.nom||'';
+        $('prs-societe').value = c.societe||''; $('prs-tel').value = c.tel||'';
+        $('prs-email').value = c.email||''; $('prs-commentaire').value = c.commentaire||'';
+        $('prs-date-depot').value = c.dateDepot||today(); $('prs-statut').value = c.statut||'depose';
+        $('prs-date-remise-prevue').value = c.dateRemisePrevue||'';
+        Object.entries(c.articles||{}).forEach(([id,q])=>{
+          const inp=document.querySelector(`.prs-qty-input[data-id="${id}"]`);
+          const valEl=$('prs-val-'+id), item=$('prs-item-'+id);
+          if(inp){ inp.value=q; if(valEl) valEl.textContent=q; if(item) item.classList.toggle('has-qty',parseInt(q)>0); }
+        });
+        updatePrsTotal();
+      }
+    }
+    modal.classList.add('open');
+  }
+  function closePrsModal() { const m=$('modal-pressing'); if(m) m.classList.remove('open'); }
+
+  function buildPrsArticleGrids(cat) {
+    const container = $('prs-articles-container'), totalWrap = $('prs-total-wrap');
+    if(!container) return;
+    if(!cat||!cat.length) {
+      container.innerHTML = `<div class="prs-empty-cat">Catalogue vide — <button type="button" class="btn btn-outline btn-sm" onclick="closePrsModal();openCatModal()">G\xe9rer le catalogue</button></div>`;
+      if(totalWrap) totalWrap.style.display='none'; return;
+    }
+    if(totalWrap) totalWrap.style.display='';
+    const catLabels = { vetements:'V\xeatements', linge:'Linge maison', autre:'Autre' };
+    const groups = {};
+    cat.forEach(a=>{ const c=a.categorie||'autre'; if(!groups[c]) groups[c]=[]; groups[c].push(a); });
+    let html='';
+    Object.entries(groups).forEach(([grp,arts])=>{
+      html += `<div class="prs-cat-label">${catLabels[grp]||grp}</div><div class="prs-articles-grid">`;
+      html += arts.map(a=>`<div class="prs-article-item" id="prs-item-${a.id}">
+        <div class="prs-article-label">${esc(a.label)}</div>
+        <div class="prs-article-prix">${parseFloat(a.prix).toFixed(2).replace('.',',')} \u20ac</div>
+        <input class="prs-article-qty prs-qty-input" type="hidden" value="0" data-id="${a.id}" data-prix="${a.prix}">
+        <div class="prs-stepper">
+          <button type="button" class="prs-step-btn" onclick="stepPrsQty('${a.id}',-1)">\u2212</button>
+          <span class="prs-step-val" id="prs-val-${a.id}">0</span>
+          <button type="button" class="prs-step-btn" onclick="stepPrsQty('${a.id}',1)">+</button>
+        </div></div>`).join('');
+      html += `</div>`;
+    });
+    container.innerHTML = html; updatePrsTotal();
+  }
+
+  function stepPrsQty(id, delta) {
+    const inp=document.querySelector(`.prs-qty-input[data-id="${id}"]`), valEl=$('prs-val-'+id), item=$('prs-item-'+id);
+    if(!inp) return;
+    const qty=Math.max(0,Math.min(99,(parseInt(inp.value)||0)+delta));
+    inp.value=qty; if(valEl) valEl.textContent=qty; if(item) item.classList.toggle('has-qty',qty>0);
+    updatePrsTotal();
+  }
+  function updatePrsTotal() {
+    let t=0;
+    document.querySelectorAll('.prs-qty-input').forEach(i=>{ t+=(parseInt(i.value)||0)*(parseFloat(i.dataset.prix)||0); });
+    const el=$('prs-total-display'); if(el) el.textContent=t.toFixed(2).replace('.',',')+' \u20ac'; return t;
+  }
+
+  function savePrsCommande() {
+    const ticket=($('prs-ticket').value||'').trim(), nom=($('prs-nom').value||'').trim(), dateDepot=$('prs-date-depot').value, statut=$('prs-statut').value||'depose';
+    if(!ticket){ $('prs-ticket').focus(); alert('Le num\xe9ro de ticket est obligatoire.'); return; }
+    if(!nom)   { $('prs-nom').focus();    alert('Le nom du client est obligatoire.'); return; }
+    if(!dateDepot){ alert('La date de d\xe9p\xf4t est obligatoire.'); return; }
+    const articles={};
+    document.querySelectorAll('.prs-qty-input').forEach(i=>{ const q=parseInt(i.value)||0; if(q>0) articles[i.dataset.id]=q; });
+    const total=updatePrsTotal(), data=loadPrsData(), editId=$('prs-edit-id').value;
+    const dup=data.find(x=>x.ticket===ticket&&x.id!==editId);
+    if(dup&&!editId){ if(!confirm(`Le ticket #${ticket} existe d\xe9j\xe0. Continuer ?`)) return; }
+    if(editId) {
+      const c=data.find(x=>x.id===editId);
+      if(c) Object.assign(c,{ ticket, prenom:($('prs-prenom').value||'').trim(), nom, societe:($('prs-societe').value||'').trim(), tel:($('prs-tel').value||'').trim(), email:($('prs-email').value||'').trim(), dateDepot, statut, articles, total, dateRemisePrevue:($('prs-date-remise-prevue').value||''), commentaire:($('prs-commentaire').value||'').trim() });
+      if(statut==='remis'&&c&&!c.dateRemise) c.dateRemise=today();
+    } else {
+      data.push({ id:'prs_'+Date.now(), ticket, prenom:($('prs-prenom').value||'').trim(), nom, societe:($('prs-societe').value||'').trim(), tel:($('prs-tel').value||'').trim(), email:($('prs-email').value||'').trim(), dateDepot, statut, articles, total, paye:false, dateRemisePrevue:($('prs-date-remise-prevue').value||''), commentaire:($('prs-commentaire').value||'').trim(), dateRemise:statut==='remis'?today():null, createdBy:SESSION?.login||'' });
+    }
+    savePrsData(data); closePrsModal(); renderPressing();
+    flashSuccess(editId?'Commande modifi\xe9e \u2705':'D\xe9p\xf4t enregistr\xe9 \U0001F9FA', nom);
+  }
+
+  /* ─── Autocomplete sociétés depuis collaborateurs ─── */
+  function filterPrsSocieteList(val) {
+    const list=$('prs-societe-list'); if(!list) return;
+    if(!val){ list.style.display='none'; return; }
+    const q=val.toLowerCase(), set=new Set(dataCollab.map(c=>c.entreprise).filter(Boolean));
+    const matches=[...set].sort().filter(s=>s.toLowerCase().includes(q));
+    if(!matches.length){ list.style.display='none'; return; }
+    list.innerHTML=matches.map(s=>`<li style="padding:6px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border-soft)" onmousedown="selectPrsSociete(this.dataset.v)" data-v="${s.replace(/"/g,'&quot;')}">${esc(s)}</li>`).join('');
+    list.style.display='block';
+  }
+  function selectPrsSociete(s){ const i=$('prs-societe'); if(i) i.value=s; const l=$('prs-societe-list'); if(l) l.style.display='none'; }
+
+  /* ═══════════════════════════════════════
+     CATALOGUE — Gestion par site
+  ═══════════════════════════════════════ */
+  let _catEditId = null;
+
+  function openCatModal() {
+    _catEditId=null; $('cat-edit-id').value=''; $('cat-label').value=''; $('cat-prix').value=''; $('cat-categorie').value='vetements';
+    $('cat-save-label').textContent='Ajouter'; const cr=$('cat-edit-cancel-row'); if(cr) cr.style.display='none';
+    renderCatTable(); const m=$('modal-cat-pressing'); if(m) m.classList.add('open');
+  }
+  function closeCatModal() { const m=$('modal-cat-pressing'); if(m) m.classList.remove('open'); }
+
+  function renderCatTable() {
+    const tbody=$('cat-tbody'); if(!tbody) return;
+    const cat=loadPrsCat(), catLabels={vetements:'V\xeatements',linge:'Linge maison',autre:'Autre'};
+    if(!cat.length){ tbody.innerHTML=`<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--muted);font-size:13px">Aucun article. Ajoutez-en ci-dessus.</td></tr>`; return; }
+    tbody.innerHTML=cat.map(a=>`<tr>
+      <td style="font-weight:500">${esc(a.label)}</td>
+      <td><span class="badge badge-navy">${catLabels[a.categorie||'autre']||a.categorie}</span></td>
+      <td style="font-weight:600;color:var(--forest)">${parseFloat(a.prix).toFixed(2).replace('.',',')} \u20ac</td>
+      <td><div style="display:flex;gap:4px">
+        <button class="btn btn-outline btn-sm" onclick="editCatArticle('${a.id}')">\u270f\ufe0f</button>
+        <button class="btn btn-outline btn-sm" style="border-color:var(--danger);color:var(--danger)" onclick="deleteCatArticle('${a.id}')">\U0001F5D1</button>
+      </div></td></tr>`).join('');
+  }
+
+  function saveCatArticle() {
+    const label=($('cat-label').value||'').trim(), prix=parseFloat($('cat-prix').value), categorie=$('cat-categorie').value||'vetements';
+    if(!label){ $('cat-label').focus(); alert('Le libell\xe9 est obligatoire.'); return; }
+    if(isNaN(prix)||prix<0){ $('cat-prix').focus(); alert('Prix invalide.'); return; }
+    const cat=loadPrsCat(), editId=$('cat-edit-id').value;
+    if(editId){ const idx=cat.findIndex(a=>a.id===editId); if(idx!==-1) cat[idx]={...cat[idx],label,prix,categorie}; }
+    else cat.push({id:'art_'+Date.now(),label,prix,categorie});
+    savePrsCat(cat); renderCatTable();
+    $('cat-label').value=''; $('cat-prix').value=''; $('cat-categorie').value='vetements'; $('cat-edit-id').value=''; _catEditId=null;
+    $('cat-save-label').textContent='Ajouter'; const cr=$('cat-edit-cancel-row'); if(cr) cr.style.display='none';
+    toast('Article '+(editId?'mis \xe0 jour':'ajout\xe9')+' : '+label);
+  }
+
+  function editCatArticle(id) {
+    const a=loadPrsCat().find(x=>x.id===id); if(!a) return;
+    _catEditId=id; $('cat-edit-id').value=id; $('cat-label').value=a.label; $('cat-prix').value=a.prix; $('cat-categorie').value=a.categorie||'vetements';
+    $('cat-save-label').textContent='Enregistrer'; const cr=$('cat-edit-cancel-row'); if(cr) cr.style.display=''; $('cat-label').focus();
+  }
+  function cancelCatEdit() {
+    _catEditId=null; $('cat-edit-id').value=''; $('cat-label').value=''; $('cat-prix').value=''; $('cat-categorie').value='vetements';
+    $('cat-save-label').textContent='Ajouter'; const cr=$('cat-edit-cancel-row'); if(cr) cr.style.display='none';
+  }
+  function deleteCatArticle(id) {
+    if(!confirm('Supprimer cet article du catalogue ?')) return;
+    savePrsCat(loadPrsCat().filter(a=>a.id!==id)); renderCatTable(); toast('Article supprim\xe9 du catalogue');
+  }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
